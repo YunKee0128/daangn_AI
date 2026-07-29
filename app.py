@@ -167,6 +167,25 @@ def inject_theme_style():
             margin-bottom: 10px;
         }
 
+        [data-testid="stSidebar"] .st-key-home_logo button {
+            width: 52px;
+            height: 52px;
+            border-radius: 18px;
+            background: var(--karrot);
+            color: #ffffff;
+            border: 0;
+            box-shadow: 0 14px 28px rgba(255, 111, 15, 0.28);
+            font-size: 1.45rem;
+            padding: 0;
+            margin-bottom: 14px;
+        }
+
+        [data-testid="stSidebar"] .st-key-home_logo button:hover {
+            background: var(--karrot-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
         [data-testid="stSidebar"] .stButton > button:hover {
             background: #fff7ed;
             color: var(--karrot);
