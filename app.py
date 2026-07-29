@@ -77,24 +77,26 @@ def inject_theme_style():
             --ink: #1f2933;
             --muted: #6b7280;
             --line: #edf0f2;
-            --soft: #fff7ed;
+            --soft: #fff4ea;
             --green: #17a673;
             --red: #e5484d;
             --blue: #2f80ed;
         }
 
         .stApp {
-            background: #fffaf5;
+            background:
+                radial-gradient(circle at top left, rgba(255, 111, 15, 0.08), transparent 28rem),
+                linear-gradient(180deg, #ffffff 0%, #fffaf6 100%);
             color: var(--ink);
         }
 
         [data-testid="stHeader"] {
-            background: rgba(255, 250, 245, 0.92);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(10px);
         }
 
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #ffffff 0%, #fff8f1 100%);
+            background: #ffffff;
             border-right: 1px solid var(--line);
         }
 
@@ -112,13 +114,13 @@ def inject_theme_style():
             border-radius: 18px;
             padding: 18px 16px;
             margin: 4px 0 18px;
-            box-shadow: 0 14px 30px rgba(255, 111, 15, 0.10);
+            box-shadow: 0 16px 36px rgba(31, 41, 51, 0.07);
         }
 
         .sidebar-logo {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 15px;
             background: var(--karrot);
             color: #ffffff;
             display: flex;
@@ -154,28 +156,47 @@ def inject_theme_style():
         }
 
         [data-testid="stSidebar"] [role="radiogroup"] label {
+            position: relative;
             background: #ffffff;
             border: 1px solid #edf0f2;
             border-radius: 14px;
-            padding: 12px 13px;
+            padding: 13px 14px;
             margin-bottom: 8px;
             box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+            cursor: pointer;
+            transition: all 0.16s ease;
         }
 
         [data-testid="stSidebar"] [role="radiogroup"] label:hover {
             border-color: #ffc391;
             background: #fff7ed;
+            transform: translateY(-1px);
         }
 
         [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
             border-color: var(--karrot);
-            background: #fff1e5;
+            background: linear-gradient(180deg, #fff7ef 0%, #ffffff 100%);
             box-shadow: 0 10px 20px rgba(255, 111, 15, 0.13);
         }
 
         [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {
             color: var(--karrot);
             font-weight: 900;
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label > div:first-child {
+            display: none;
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked)::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            bottom: 12px;
+            width: 4px;
+            border-radius: 999px;
+            background: var(--karrot);
         }
 
         .sidebar-status {
@@ -214,7 +235,7 @@ def inject_theme_style():
         .block-container {
             padding-top: 2rem;
             padding-bottom: 3rem;
-            max-width: 1180px;
+            max-width: 1160px;
         }
 
         h1, h2, h3 {
@@ -223,12 +244,12 @@ def inject_theme_style():
         }
 
         .app-hero {
-            background: linear-gradient(135deg, #fff3e8 0%, #ffffff 58%, #eefaf4 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fff7ef 48%, #ffffff 100%);
             border: 1px solid #ffe2c6;
             border-radius: 22px;
             padding: 26px 32px;
             margin-bottom: 22px;
-            box-shadow: 0 18px 45px rgba(255, 111, 15, 0.10);
+            box-shadow: 0 18px 44px rgba(31, 41, 51, 0.07);
         }
 
         .hero-kicker {
@@ -375,9 +396,9 @@ def inject_theme_style():
         div[data-testid="stForm"] {
             background: #ffffff;
             border: 1px solid var(--line);
-            border-radius: 18px;
+            border-radius: 20px;
             padding: 24px 24px 14px;
-            box-shadow: 0 14px 34px rgba(31, 41, 51, 0.08);
+            box-shadow: 0 18px 46px rgba(31, 41, 51, 0.08);
         }
 
         div[data-testid="stTextInput"] input,
@@ -387,7 +408,7 @@ def inject_theme_style():
             background-color: #fbfbfb !important;
             border-color: #e5e7eb !important;
             color: var(--ink) !important;
-            border-radius: 12px !important;
+            border-radius: 14px !important;
         }
 
         div[data-testid="stTextInput"] input:focus,
@@ -402,10 +423,11 @@ def inject_theme_style():
             background: var(--karrot);
             color: white;
             border: 0;
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 0.82rem 1.35rem;
             font-weight: 800;
             box-shadow: 0 10px 22px rgba(255, 111, 15, 0.24);
+            transition: all 0.16s ease;
         }
 
         .stButton > button:hover,
@@ -413,6 +435,7 @@ def inject_theme_style():
             background: var(--karrot-dark);
             color: white;
             border: 0;
+            transform: translateY(-1px);
         }
 
         .info-card {
@@ -844,8 +867,10 @@ def generate_multilingual_result(item_info, price_result, language):
     return response.choices[0].message.content
 
 
-def analyze_used_item_link(url, language="English", manual_price=None, use_ai=True):
+def analyze_used_item_link(url, language="English", manual_price=None, use_ai=True, category=None):
     item_info = extract_item_info_from_link(url)
+    if category:
+        item_info["카테고리"] = category
     price_result = predict_price_from_item(item_info, manual_price=manual_price)
     ai_result = None
     if use_ai:
@@ -912,7 +937,25 @@ def render_analysis_page():
         )
         url = st.text_input("상품 링크", placeholder="https://www.daangn.com/kr/buy-sell/...", label_visibility="collapsed")
 
-        st.markdown('<div class="option-row-title">옵션</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div class="form-heading"><span>2</span>상품 종류</div>
+            <div class="form-note">링크만으로 종류를 알기 어려울 때를 위해 먼저 골라주세요.</div>
+            """,
+            unsafe_allow_html=True,
+        )
+        selected_category = st.pills(
+            "상품 종류",
+            CATEGORY_OPTIONS,
+            default="전자기기",
+            format_func=lambda value: CATEGORY_LABELS[value],
+            key="link_category",
+            label_visibility="collapsed",
+            width="stretch",
+        )
+        selected_category = selected_category or "기타"
+
+        st.markdown('<div class="option-row-title">확인 옵션</div>', unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1.15, 1.2, 1.2, 1.15])
         with col1:
             use_manual_price = st.checkbox("판매가 직접 입력", value=True)
@@ -940,6 +983,7 @@ def render_analysis_page():
                 language=LANGUAGE_OPTIONS[language_label],
                 manual_price=selected_price,
                 use_ai=use_ai,
+                category=selected_category,
             )
         except Exception as exc:
             st.error(f"분석 중 오류가 발생했습니다: {exc}")
@@ -1126,7 +1170,7 @@ def main():
     st.sidebar.markdown(
         """
         <div class="sidebar-brand">
-            <div class="sidebar-logo">ㄷ</div>
+            <div class="sidebar-logo">D</div>
             <div class="sidebar-title">유학생<br>거래 도우미</div>
             <div class="sidebar-copy">가격 확인부터 외국어 메시지까지 한 번에 도와드려요.</div>
         </div>
@@ -1136,7 +1180,7 @@ def main():
     )
     page = st.sidebar.radio(
         "메뉴",
-        ["직접 입력", "링크 분석", "데이터 대시보드"],
+        ["링크 분석", "직접 입력", "데이터 대시보드"],
         label_visibility="collapsed",
     )
 
@@ -1173,10 +1217,10 @@ def main():
             unsafe_allow_html=True,
         )
 
-    if page == "직접 입력":
-        render_manual_page()
-    elif page == "링크 분석":
+    if page == "링크 분석":
         render_analysis_page()
+    elif page == "직접 입력":
+        render_manual_page()
     else:
         render_dashboard_page()
 
