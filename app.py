@@ -61,12 +61,121 @@ def inject_theme_style():
         }
 
         [data-testid="stSidebar"] {
-            background: #ffffff;
+            background: linear-gradient(180deg, #ffffff 0%, #fff8f1 100%);
             border-right: 1px solid var(--line);
         }
 
         [data-testid="stSidebar"] * {
             color: var(--ink);
+        }
+
+        [data-testid="stSidebar"] section {
+            padding-top: 1.4rem;
+        }
+
+        .sidebar-brand {
+            background: #ffffff;
+            border: 1px solid #ffe2c6;
+            border-radius: 18px;
+            padding: 18px 16px;
+            margin: 4px 0 18px;
+            box-shadow: 0 14px 30px rgba(255, 111, 15, 0.10);
+        }
+
+        .sidebar-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: var(--karrot);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.45rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-title {
+            font-size: 1.45rem;
+            font-weight: 900;
+            line-height: 1.22;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-copy {
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .sidebar-label {
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 900;
+            margin: 12px 0 8px;
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] {
+            gap: 8px;
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label {
+            background: #ffffff;
+            border: 1px solid #edf0f2;
+            border-radius: 14px;
+            padding: 12px 13px;
+            margin-bottom: 8px;
+            box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label:hover {
+            border-color: #ffc391;
+            background: #fff7ed;
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) {
+            border-color: var(--karrot);
+            background: #fff1e5;
+            box-shadow: 0 10px 20px rgba(255, 111, 15, 0.13);
+        }
+
+        [data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p {
+            color: var(--karrot);
+            font-weight: 900;
+        }
+
+        .sidebar-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px 13px;
+            margin-top: 10px;
+            box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+            font-size: 0.92rem;
+            font-weight: 800;
+        }
+
+        .sidebar-status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            flex: 0 0 auto;
+        }
+
+        .sidebar-status.ok .sidebar-status-dot {
+            background: var(--green);
+        }
+
+        .sidebar-status.warn .sidebar-status-dot {
+            background: var(--karrot);
+        }
+
+        .sidebar-status.muted .sidebar-status-dot {
+            background: #9ca3af;
         }
 
         .block-container {
@@ -84,7 +193,7 @@ def inject_theme_style():
             background: linear-gradient(135deg, #fff3e8 0%, #ffffff 58%, #eefaf4 100%);
             border: 1px solid #ffe2c6;
             border-radius: 22px;
-            padding: 30px 34px;
+            padding: 26px 32px;
             margin-bottom: 22px;
             box-shadow: 0 18px 45px rgba(255, 111, 15, 0.10);
         }
@@ -98,7 +207,7 @@ def inject_theme_style():
 
         .hero-title {
             color: var(--ink);
-            font-size: clamp(2.1rem, 4vw, 3.7rem);
+            font-size: clamp(2rem, 3.4vw, 3.25rem);
             font-weight: 900;
             line-height: 1.08;
             margin-bottom: 12px;
@@ -111,11 +220,88 @@ def inject_theme_style():
             max-width: 760px;
         }
 
+        .step-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 0 0 18px;
+        }
+
+        .step-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 15px 16px;
+            box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 10px;
+            background: #fff1e5;
+            color: var(--karrot);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .step-copy {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.45;
+        }
+
+        .form-heading {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 1.08rem;
+            font-weight: 900;
+            color: var(--ink);
+            margin: 2px 0 12px;
+        }
+
+        .form-heading span {
+            width: 26px;
+            height: 26px;
+            border-radius: 9px;
+            background: var(--karrot);
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .form-note {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.55;
+            margin: -2px 0 16px;
+        }
+
+        .option-row-title {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 900;
+            margin: 16px 0 8px;
+        }
+
         div[data-testid="stForm"] {
             background: #ffffff;
             border: 1px solid var(--line);
             border-radius: 18px;
-            padding: 22px 22px 12px;
+            padding: 24px 24px 14px;
             box-shadow: 0 14px 34px rgba(31, 41, 51, 0.08);
         }
 
@@ -142,7 +328,7 @@ def inject_theme_style():
             color: white;
             border: 0;
             border-radius: 12px;
-            padding: 0.68rem 1.2rem;
+            padding: 0.82rem 1.35rem;
             font-weight: 800;
             box-shadow: 0 10px 22px rgba(255, 111, 15, 0.24);
         }
@@ -234,6 +420,16 @@ def inject_theme_style():
 
         [data-testid="stMetricValue"] {
             color: var(--ink);
+        }
+
+        @media (max-width: 780px) {
+            .step-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .app-hero {
+                padding: 22px 20px;
+            }
         }
         </style>
         """,
@@ -604,22 +800,55 @@ def render_status_badge(status):
 
 def render_analysis_page():
     render_hero(
-        "링크로 상품 확인하기",
-        "당근마켓 링크를 넣으면 판매가와 예상 시세를 비교하고, 외국어로 이해하기 쉬운 구매 도움말을 보여줍니다.",
+        "링크만 붙여넣으면 끝",
+        "판매가가 괜찮은지 바로 확인하고, 외국어로 보낼 메시지까지 한 번에 준비하세요.",
+    )
+
+    st.markdown(
+        """
+        <div class="step-strip">
+            <div class="step-card">
+                <div class="step-num">1</div>
+                <div class="step-title">링크 붙여넣기</div>
+                <div class="step-copy">당근 게시글 주소를 그대로 넣어요.</div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">2</div>
+                <div class="step-title">판매가 확인</div>
+                <div class="step-copy">자동 인식이 안 되면 직접 입력해요.</div>
+            </div>
+            <div class="step-card">
+                <div class="step-num">3</div>
+                <div class="step-title">구매 판단</div>
+                <div class="step-copy">예상 시세와 거래 메시지를 확인해요.</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     with st.form("analysis_form"):
-        url = st.text_input("당근마켓 게시글 링크", placeholder="https://www.daangn.com/kr/buy-sell/...")
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col1:
-            use_manual_price = st.checkbox("판매 가격 직접 입력", value=True)
-        with col2:
-            manual_price = st.number_input("판매 가격", min_value=0, step=1000, value=0, disabled=not use_manual_price)
-        with col3:
-            language_label = st.selectbox("설명 언어", list(LANGUAGE_OPTIONS.keys()))
+        st.markdown(
+            """
+            <div class="form-heading"><span>1</span>상품 링크</div>
+            <div class="form-note">당근마켓 게시글 주소를 복사해서 붙여넣으세요.</div>
+            """,
+            unsafe_allow_html=True,
+        )
+        url = st.text_input("상품 링크", placeholder="https://www.daangn.com/kr/buy-sell/...", label_visibility="collapsed")
 
-        use_ai = st.checkbox("구매 도움말 만들기", value=True)
-        submitted = st.form_submit_button("분석하기", type="primary")
+        st.markdown('<div class="option-row-title">옵션</div>', unsafe_allow_html=True)
+        col1, col2, col3, col4 = st.columns([1.15, 1.2, 1.2, 1.15])
+        with col1:
+            use_manual_price = st.checkbox("판매가 직접 입력", value=True)
+        with col2:
+            manual_price = st.number_input("판매가", min_value=0, step=1000, value=0, disabled=not use_manual_price)
+        with col3:
+            language_label = st.selectbox("언어", list(LANGUAGE_OPTIONS.keys()))
+        with col4:
+            use_ai = st.checkbox("도움말 받기", value=True)
+
+        submitted = st.form_submit_button("상품 확인하기", type="primary", use_container_width=True)
 
     if not submitted:
         return
@@ -784,18 +1013,55 @@ def main():
     load_dotenv_if_exists()
     inject_theme_style()
 
-    st.sidebar.title("유학생 거래 도우미")
-    st.sidebar.caption("가격 확인부터 다국어 메시지까지")
-    page = st.sidebar.radio("이동", ["직접 입력", "링크 분석", "데이터 대시보드"])
+    st.sidebar.markdown(
+        """
+        <div class="sidebar-brand">
+            <div class="sidebar-logo">ㄷ</div>
+            <div class="sidebar-title">유학생<br>거래 도우미</div>
+            <div class="sidebar-copy">가격 확인부터 외국어 메시지까지 한 번에 도와드려요.</div>
+        </div>
+        <div class="sidebar-label">MENU</div>
+        """,
+        unsafe_allow_html=True,
+    )
+    page = st.sidebar.radio(
+        "메뉴",
+        ["직접 입력", "링크 분석", "데이터 대시보드"],
+        label_visibility="collapsed",
+    )
 
     model = load_model()
     if model is None:
-        st.sidebar.warning("가격 예측 모델 파일이 없습니다.")
+        st.sidebar.markdown(
+            """
+            <div class="sidebar-status warn">
+                <span class="sidebar-status-dot"></span>
+                시세 모델을 찾을 수 없어요
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     else:
-        st.sidebar.success("가격 예측 모델 로드 완료")
+        st.sidebar.markdown(
+            """
+            <div class="sidebar-status ok">
+                <span class="sidebar-status-dot"></span>
+                시세 모델 준비 완료
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     if not get_secret("OPENAI_API_KEY"):
-        st.sidebar.info("AI 설명을 사용하려면 OPENAI_API_KEY를 설정하세요.")
+        st.sidebar.markdown(
+            """
+            <div class="sidebar-status muted">
+                <span class="sidebar-status-dot"></span>
+                구매 도움말은 키 설정 후 사용 가능
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     if page == "직접 입력":
         render_manual_page()
