@@ -105,6 +105,28 @@ def format_won(value):
     return f"{int(value):,}원"
 
 
+def fix_mojibake(text):
+    if text is None:
+        return text
+
+    text = str(text)
+    broken_markers = ["Ã", "Â", "ì", "í", "ê", "ë", "ï¿½", "�"]
+    if not any(marker in text for marker in broken_markers):
+        return text
+
+    candidates = [text]
+    for source_encoding in ("latin1", "cp1252"):
+        try:
+            candidates.append(text.encode(source_encoding).decode("utf-8"))
+        except UnicodeError:
+            pass
+
+    def badness(value):
+        return sum(value.count(marker) for marker in broken_markers)
+
+    return min(candidates, key=badness)
+
+
 def judge_price(actual_price, predicted_price):
     if predicted_price is None or pd.isna(predicted_price):
         return "판단 불가"
@@ -117,14 +139,14 @@ def judge_price(actual_price, predicted_price):
 
 def get_title_from_url(url):
     try:
-        decoded_url = urllib.parse.unquote(url)
+        decoded_url = urllib.parse.unquote(url, encoding="utf-8", errors="replace")
         slug = decoded_url.split("/buy-sell/")[-1].strip("/")
         slug = slug.split("?")[0].split("#")[0]
         parts = slug.split("-")
         if len(parts) > 1:
             parts = parts[:-1]
         title = " ".join(parts).strip()
-        return title or "제목 없음"
+        return fix_mojibake(title or "제목 없음")
     except Exception:
         return "제목 없음"
 
@@ -171,7 +193,7 @@ def fetch_html(url):
     }
     response = requests.get(url, headers=headers, timeout=12)
     response.raise_for_status()
-    return response.text
+    return response.content.decode("utf-8", errors="replace")
 
 
 def extract_item_info_from_link(url):
@@ -184,6 +206,7 @@ def extract_item_info_from_link(url):
     og_title = soup.select_one("meta[property='og:title']")
     if og_title and og_title.get("content"):
         meta_title = og_title["content"].replace(" | 당근", "").replace(" - 당근", "").strip()
+        meta_title = fix_mojibake(meta_title)
         if len(meta_title) > len(title):
             title = meta_title
 
@@ -205,7 +228,7 @@ def extract_item_info_from_link(url):
     for selector in ['meta[property="og:description"]', 'meta[name="description"]']:
         meta_desc = soup.select_one(selector)
         if meta_desc and meta_desc.get("content"):
-            description = meta_desc["content"].strip()
+            description = fix_mojibake(meta_desc["content"].strip())
             break
 
     if description == "상세설명 없음":
@@ -222,10 +245,10 @@ def extract_item_info_from_link(url):
             description = " ".join(candidates[:5])
 
     return {
-        "제목": title,
-        "가격": price,
+        "제목": fix_mojibake(title),
+        "가격": fix_mojibake(price),
         "가격_numeric": clean_price(price),
-        "상세설명": clean_description_text(description, title),
+        "상세설명": fix_mojibake(clean_description_text(description, title)),
         "링크": url,
     }
 
