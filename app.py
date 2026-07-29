@@ -504,6 +504,72 @@ def inject_theme_style():
             margin: 26px 0 12px;
         }
 
+        .dashboard-card {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 12px 28px rgba(31, 41, 51, 0.07);
+            margin-bottom: 14px;
+        }
+
+        .category-stat {
+            background: #ffffff;
+            border: 1px solid #edf0f2;
+            border-radius: 16px;
+            padding: 18px;
+            min-height: 128px;
+            box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+        }
+
+        .category-name {
+            font-size: 1.06rem;
+            font-weight: 900;
+            color: var(--ink);
+            margin-bottom: 8px;
+        }
+
+        .category-price {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--karrot);
+            margin-bottom: 6px;
+        }
+
+        .category-count {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .item-row {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-bottom: 10px;
+            box-shadow: 0 8px 20px rgba(31, 41, 51, 0.05);
+        }
+
+        .item-title {
+            color: var(--ink);
+            font-size: 1rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            overflow-wrap: anywhere;
+        }
+
+        .item-meta {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .item-price {
+            color: var(--karrot);
+            font-weight: 900;
+        }
+
         [data-testid="stMetric"] {
             background: #ffffff;
             border: 1px solid var(--line);
@@ -1128,39 +1194,98 @@ def render_manual_page():
 
 def render_dashboard_page():
     render_hero(
-        "수집 데이터 대시보드",
-        "부산 지역 중고거래 수집 데이터를 카테고리와 가격 기준으로 살펴볼 수 있습니다.",
-        kicker="거래 데이터 보기",
+        "부산 중고거래 시세 보기",
+        "수집한 상품 데이터를 카테고리별로 훑어보고, 궁금한 물건을 바로 검색해보세요.",
+        kicker="거래 데이터 둘러보기",
     )
     df = load_data()
     if df.empty:
         st.warning("used_items_cleaned.csv 파일을 찾을 수 없습니다.")
         return
 
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("전체 상품 수", f"{len(df):,}")
-    col2.metric("평균 가격", format_won(df["가격_numeric"].mean()))
-    col3.metric("중앙값", format_won(df["가격_numeric"].median()))
-    col4.metric("카테고리 수", df["카테고리"].nunique())
+    df = df.copy()
+    df["가격_numeric"] = pd.to_numeric(df["가격_numeric"], errors="coerce")
+    df = df.dropna(subset=["가격_numeric"])
 
-    st.subheader("카테고리별 가격")
+    st.markdown('<div class="section-title">한눈에 보기</div>', unsafe_allow_html=True)
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        render_info_card("등록 상품", f"{len(df):,}개")
+    with col2:
+        render_info_card("평균 시세", format_won(df["가격_numeric"].mean()))
+    with col3:
+        render_info_card("중간 가격", format_won(df["가격_numeric"].median()))
+    with col4:
+        render_info_card("상품 종류", f"{df['카테고리'].nunique()}개")
+
     category_summary = (
         df.groupby("카테고리", as_index=False)
         .agg(상품수=("제목", "count"), 평균가격=("가격_numeric", "mean"), 중앙값=("가격_numeric", "median"))
         .sort_values("상품수", ascending=False)
     )
-    st.dataframe(category_summary, use_container_width=True)
-    st.bar_chart(category_summary.set_index("카테고리")["상품수"])
 
-    st.subheader("상품 검색")
-    keyword = st.text_input("검색어", placeholder="아이폰, 책상, 자전거...")
+    st.markdown('<div class="section-title">카테고리별 시세</div>', unsafe_allow_html=True)
+    category_cols = st.columns(3)
+    for index, row in category_summary.head(6).reset_index(drop=True).iterrows():
+        with category_cols[index % 3]:
+            st.markdown(
+                f"""
+                <div class="category-stat">
+                    <div class="category-name">{escape(str(row['카테고리']))}</div>
+                    <div class="category-price">{escape(format_won(row['중앙값']))}</div>
+                    <div class="category-count">{int(row['상품수']):,}개 상품 · 평균 {escape(format_won(row['평균가격']))}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+    st.markdown('<div class="section-title">상품 찾아보기</div>', unsafe_allow_html=True)
+    filter_col1, filter_col2, filter_col3 = st.columns([1.2, 2, 1.2])
+    with filter_col1:
+        selected_category = st.selectbox("카테고리", ["전체"] + category_summary["카테고리"].tolist())
+    with filter_col2:
+        keyword = st.text_input("검색어", placeholder="아이폰, 책상, 자전거...")
+    with filter_col3:
+        sort_label = st.selectbox("정렬", ["낮은 가격순", "높은 가격순", "최근 수집순"])
+
     filtered = df.copy()
+    if selected_category != "전체":
+        filtered = filtered[filtered["카테고리"] == selected_category]
     if keyword:
         filtered = filtered[filtered["제목"].astype(str).str.contains(keyword, case=False, na=False)]
-    st.dataframe(
-        filtered[["수집동네", "제목", "가격", "카테고리", "게시글링크"]].head(200),
-        use_container_width=True,
-    )
+
+    if sort_label == "낮은 가격순":
+        sorted_items = filtered.sort_values("가격_numeric", ascending=True)
+    elif sort_label == "높은 가격순":
+        sorted_items = filtered.sort_values("가격_numeric", ascending=False)
+    else:
+        sorted_items = filtered.sort_index(ascending=False)
+
+    st.caption(f"{len(filtered):,}개 상품")
+    for _, row in sorted_items.head(12).iterrows():
+        title = escape(str(row.get("제목", "")))
+        category = escape(str(row.get("카테고리", "")))
+        town = escape(str(row.get("수집동네", "")))
+        price = escape(str(row.get("가격", format_won(row.get("가격_numeric")))))
+        link = escape(str(row.get("게시글링크", "")))
+        link_html = f' · <a href="{link}" target="_blank">게시글 보기</a>' if link.startswith("http") else ""
+        st.markdown(
+            f"""
+            <div class="item-row">
+                <div class="item-title">{title}</div>
+                <div class="item-meta">
+                    <span class="item-price">{price}</span> · {category} · {town}{link_html}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    with st.expander("전체 데이터 표로 보기"):
+        st.dataframe(
+            filtered[["수집동네", "제목", "가격", "카테고리", "게시글링크"]].head(200),
+            use_container_width=True,
+        )
 
 
 def main():
