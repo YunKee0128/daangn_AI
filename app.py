@@ -473,6 +473,96 @@ def inject_theme_style():
             margin: 10px 0 18px;
         }
 
+        .result-summary {
+            background: linear-gradient(135deg, #ffffff 0%, #fff7ef 100%);
+            border: 1px solid #ffe2c6;
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 0 18px 42px rgba(255, 111, 15, 0.12);
+            margin: 24px 0 18px;
+        }
+
+        .result-kicker {
+            color: var(--karrot);
+            font-size: 0.86rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 999px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .result-title {
+            color: var(--ink);
+            font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+            font-weight: 900;
+            line-height: 1.22;
+            margin-bottom: 8px;
+        }
+
+        .result-copy {
+            color: #4b5563;
+            font-size: 1rem;
+            line-height: 1.65;
+        }
+
+        .result-numbers {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .result-number {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .result-number-label {
+            color: var(--muted);
+            font-size: 0.84rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .result-number-value {
+            color: var(--ink);
+            font-size: 1.35rem;
+            font-weight: 900;
+        }
+
+        .notice-card {
+            background: #ffffff;
+            border: 1px solid #ffe2c6;
+            border-radius: 18px;
+            padding: 18px 20px;
+            box-shadow: 0 12px 28px rgba(31, 41, 51, 0.07);
+            margin: 14px 0;
+        }
+
+        .notice-title {
+            color: var(--ink);
+            font-size: 1.05rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+
+        .notice-copy {
+            color: var(--muted);
+            font-size: 0.94rem;
+            line-height: 1.6;
+        }
+
         .status-pill {
             display: inline-flex;
             align-items: center;
@@ -594,6 +684,10 @@ def inject_theme_style():
             .app-hero {
                 padding: 22px 20px;
             }
+
+            .result-numbers {
+                grid-template-columns: 1fr;
+            }
         }
         </style>
         """,
@@ -620,6 +714,77 @@ def render_info_card(label, value):
         <div class="info-card">
             <div class="info-label">{escape(str(label))}</div>
             <div class="info-value">{escape(str(value))}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def get_price_feedback(status):
+    messages = {
+        "저렴": (
+            "좋은 거래일 가능성이 높아요",
+            "판매가가 예상 시세보다 낮은 편입니다. 다만 너무 저렴한 상품은 상태, 구성품, 직거래 장소를 한 번 더 확인하세요.",
+        ),
+        "적정": (
+            "무난한 가격대로 보여요",
+            "판매가가 예상 시세와 크게 차이 나지 않습니다. 상품 상태와 구성품이 설명과 맞는지 확인하면 좋아요.",
+        ),
+        "비쌈": (
+            "가격이 높은 편이에요",
+            "판매가가 예상 시세보다 높게 나왔습니다. 같은 상품의 다른 매물과 비교하거나 가격 조정을 요청해보세요.",
+        ),
+        "가격 입력 필요": (
+            "판매가를 입력하면 판단할 수 있어요",
+            "게시글에서 가격을 읽지 못했습니다. 판매가를 직접 입력하면 예상 시세와 비교해드릴게요.",
+        ),
+        "판단 불가": (
+            "지금은 판단하기 어려워요",
+            "모델이나 가격 정보가 부족합니다. 상품명과 가격을 더 구체적으로 입력해보세요.",
+        ),
+    }
+    return messages.get(status, messages["판단 불가"])
+
+
+def render_price_summary(price_result):
+    status = price_result.get("가격판단", "판단 불가")
+    title, copy = get_price_feedback(status)
+    color = {
+        "저렴": "#17a673",
+        "적정": "#2f80ed",
+        "비쌈": "#e5484d",
+        "가격 입력 필요": "#ff6f0f",
+        "판단 불가": "#6b7280",
+    }.get(status, "#6b7280")
+    st.markdown(
+        f"""
+        <div class="result-summary">
+            <div class="result-kicker">가격 체크 결과</div>
+            <div class="result-badge" style="background:{color};">{escape(str(status))}</div>
+            <div class="result-title">{escape(title)}</div>
+            <div class="result-copy">{escape(copy)}</div>
+            <div class="result-numbers">
+                <div class="result-number">
+                    <div class="result-number-label">판매가</div>
+                    <div class="result-number-value">{escape(format_won(price_result.get("실제가격")))}</div>
+                </div>
+                <div class="result-number">
+                    <div class="result-number-label">예상 시세</div>
+                    <div class="result-number-value">{escape(format_won(price_result.get("예측적정가격")))}</div>
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_notice(title, copy):
+    st.markdown(
+        f"""
+        <div class="notice-card">
+            <div class="notice-title">{escape(title)}</div>
+            <div class="notice-copy">{escape(copy)}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -1038,7 +1203,7 @@ def render_analysis_page():
         return
 
     if not url.strip():
-        st.warning("분석할 게시글 링크를 입력해주세요.")
+        render_notice("상품 링크를 넣어주세요", "당근마켓 게시글 주소를 복사해서 붙여넣으면 바로 확인할 수 있어요.")
         return
 
     selected_price = int(manual_price) if use_manual_price else None
@@ -1052,12 +1217,17 @@ def render_analysis_page():
                 category=selected_category,
             )
         except Exception as exc:
-            st.error(f"분석 중 오류가 발생했습니다: {exc}")
-            st.info("당근마켓 페이지 접근이 제한되면 제목/가격을 직접 입력하는 방식으로 테스트해보세요.")
+            render_notice(
+                "링크를 읽지 못했어요",
+                "게시글 접근이 제한되었거나 주소가 올바르지 않을 수 있어요. 같은 상품을 직접 입력 메뉴에서 확인해보세요.",
+            )
+            st.caption(f"오류 정보: {exc}")
             return
 
     item_info = result["상품정보"]
     price_result = result["가격판단결과"]
+
+    render_price_summary(price_result)
 
     st.markdown('<div class="section-title">상품 정보</div>', unsafe_allow_html=True)
     c1, c2, c3, c4 = st.columns(4)
@@ -1069,20 +1239,6 @@ def render_analysis_page():
         render_info_card("분류", price_result["카테고리"])
     with c4:
         render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
-
-    st.markdown('<div class="price-panel">', unsafe_allow_html=True)
-    st.markdown("#### 가격 체크")
-    render_status_badge(price_result["가격판단"])
-    st.markdown(
-        f"""
-        <div class="small-muted">
-        판매가 <b>{escape(format_won(price_result['실제가격']))}</b> /
-        예상 시세 <b>{escape(format_won(price_result['예측적정가격']))}</b>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
 
     with st.expander("판매자 설명", expanded=True):
         st.write(item_info["상세설명"])
@@ -1149,7 +1305,7 @@ def render_manual_page():
         return
 
     if not title.strip():
-        st.warning("상품명을 입력해주세요.")
+        render_notice("상품명을 입력해주세요", "예: 아이폰 13, 책상, 자전거처럼 상품을 알아볼 수 있게 적으면 더 정확해져요.")
         return
 
     item_info = {
@@ -1162,6 +1318,8 @@ def render_manual_page():
     }
     price_result = predict_price_from_item(item_info, manual_price=int(price))
 
+    render_price_summary(price_result)
+
     st.markdown('<div class="section-title">가격 분석 결과</div>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -1171,18 +1329,14 @@ def render_manual_page():
     with col3:
         render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
 
-    st.markdown('<div class="price-panel">', unsafe_allow_html=True)
-    st.markdown("#### 가격 체크")
-    render_status_badge(price_result["가격판단"])
     st.markdown(
-        f"""
+        """
         <div class="small-muted">
         예상 시세는 앱이 가진 거래 데이터로 계산한 값입니다. 실제 거래 전에는 상품 상태와 구성품을 함께 확인하세요.
         </div>
         """,
         unsafe_allow_html=True,
     )
-    st.markdown("</div>", unsafe_allow_html=True)
 
     if use_ai:
         with st.spinner("구매 도움말을 만드는 중입니다..."):
