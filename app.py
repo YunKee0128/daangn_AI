@@ -151,6 +151,28 @@ def inject_theme_style():
             margin: 12px 0 8px;
         }
 
+        .sidebar-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 0 0 16px;
+        }
+
+        [data-testid="stSidebar"] .stButton > button {
+            width: 100%;
+            background: #ffffff;
+            color: var(--ink);
+            border: 1px solid #edf0f2;
+            box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+            padding: 0.7rem 0.75rem;
+        }
+
+        [data-testid="stSidebar"] .stButton > button:hover {
+            background: #fff7ed;
+            color: var(--karrot);
+            border-color: #ffc391;
+        }
+
         [data-testid="stSidebar"] [role="radiogroup"] {
             gap: 8px;
         }
@@ -791,6 +813,28 @@ def render_notice(title, copy):
     )
 
 
+def reset_inputs():
+    keys_to_clear = [
+        "link_url",
+        "link_category",
+        "link_manual_price_enabled",
+        "link_manual_price",
+        "link_language",
+        "link_use_ai",
+        "manual_category",
+        "manual_title",
+        "manual_price",
+        "manual_language",
+        "manual_description",
+        "manual_ai",
+        "dashboard_category",
+        "dashboard_keyword",
+        "dashboard_sort",
+    ]
+    for key in keys_to_clear:
+        st.session_state.pop(key, None)
+
+
 def get_secret(name: str, default: str = "") -> str:
     try:
         return st.secrets.get(name, default)
@@ -1169,7 +1213,12 @@ def render_analysis_page():
             """,
             unsafe_allow_html=True,
         )
-        url = st.text_input("상품 링크", placeholder="https://www.daangn.com/kr/buy-sell/...", label_visibility="collapsed")
+        url = st.text_input(
+            "상품 링크",
+            placeholder="https://www.daangn.com/kr/buy-sell/...",
+            label_visibility="collapsed",
+            key="link_url",
+        )
 
         st.markdown(
             """
@@ -1192,13 +1241,13 @@ def render_analysis_page():
         st.markdown('<div class="option-row-title">확인 옵션</div>', unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1.15, 1.2, 1.2, 1.15])
         with col1:
-            use_manual_price = st.checkbox("판매가 직접 입력", value=True)
+            use_manual_price = st.checkbox("판매가 직접 입력", value=True, key="link_manual_price_enabled")
         with col2:
-            manual_price = st.number_input("판매가", min_value=0, step=1000, value=0, disabled=not use_manual_price)
+            manual_price = st.number_input("판매가", min_value=0, step=1000, value=0, disabled=not use_manual_price, key="link_manual_price")
         with col3:
-            language_label = st.selectbox("언어", list(LANGUAGE_OPTIONS.keys()))
+            language_label = st.selectbox("언어", list(LANGUAGE_OPTIONS.keys()), key="link_language")
         with col4:
-            use_ai = st.checkbox("도움말 받기", value=True)
+            use_ai = st.checkbox("도움말 받기", value=True, key="link_use_ai")
 
         submitted = st.form_submit_button("상품 확인하기", type="primary", use_container_width=True)
 
@@ -1292,13 +1341,21 @@ def render_manual_page():
             """,
             unsafe_allow_html=True,
         )
-        title = st.text_input("상품명", placeholder=CATEGORY_PLACEHOLDERS.get(selected_category, CATEGORY_PLACEHOLDERS["기타"]))
+        title = st.text_input(
+            "상품명",
+            placeholder=CATEGORY_PLACEHOLDERS.get(selected_category, CATEGORY_PLACEHOLDERS["기타"]),
+            key="manual_title",
+        )
         col1, col2 = st.columns([1, 1])
         with col1:
-            price = st.number_input("판매가", min_value=0, step=1000, value=10000)
+            price = st.number_input("판매가", min_value=0, step=1000, value=10000, key="manual_price")
         with col2:
             language_label = st.selectbox("도움말 언어", list(LANGUAGE_OPTIONS.keys()), key="manual_language")
-        description = st.text_area("판매자 설명", placeholder="예: 사용 기간, 구성품, 하자 여부, 직거래 위치 등을 적어주세요.")
+        description = st.text_area(
+            "판매자 설명",
+            placeholder="예: 사용 기간, 구성품, 하자 여부, 직거래 위치 등을 적어주세요.",
+            key="manual_description",
+        )
 
         st.markdown('<div class="option-row-title">추가 옵션</div>', unsafe_allow_html=True)
         use_ai = st.checkbox("구매 도움말 받기", value=True, key="manual_ai")
@@ -1399,11 +1456,11 @@ def render_dashboard_page():
     st.markdown('<div class="section-title">상품 찾아보기</div>', unsafe_allow_html=True)
     filter_col1, filter_col2, filter_col3 = st.columns([1.2, 2, 1.2])
     with filter_col1:
-        selected_category = st.selectbox("카테고리", ["전체"] + category_summary["카테고리"].tolist())
+        selected_category = st.selectbox("카테고리", ["전체"] + category_summary["카테고리"].tolist(), key="dashboard_category")
     with filter_col2:
-        keyword = st.text_input("검색어", placeholder="아이폰, 책상, 자전거...")
+        keyword = st.text_input("검색어", placeholder="아이폰, 책상, 자전거...", key="dashboard_keyword")
     with filter_col3:
-        sort_label = st.selectbox("정렬", ["낮은 가격순", "높은 가격순", "최근 수집순"])
+        sort_label = st.selectbox("정렬", ["낮은 가격순", "높은 가격순", "최근 수집순"], key="dashboard_sort")
 
     filtered = df.copy()
     if selected_category != "전체":
@@ -1449,6 +1506,9 @@ def main():
     load_dotenv_if_exists()
     inject_theme_style()
 
+    if "nav_page" not in st.session_state:
+        st.session_state["nav_page"] = "링크 분석"
+
     st.sidebar.markdown(
         """
         <div class="sidebar-brand">
@@ -1456,14 +1516,28 @@ def main():
             <div class="sidebar-title">유학생<br>거래 도우미</div>
             <div class="sidebar-copy">가격 확인부터 외국어 메시지까지 한 번에 도와드려요.</div>
         </div>
-        <div class="sidebar-label">MENU</div>
+        <div class="sidebar-label">QUICK</div>
         """,
         unsafe_allow_html=True,
     )
+
+    quick_col1, quick_col2 = st.sidebar.columns(2)
+    with quick_col1:
+        if st.button("🏠 처음", use_container_width=True):
+            reset_inputs()
+            st.session_state["nav_page"] = "링크 분석"
+            st.rerun()
+    with quick_col2:
+        if st.button("↻ 새로", use_container_width=True):
+            reset_inputs()
+            st.rerun()
+
+    st.sidebar.markdown('<div class="sidebar-label">MENU</div>', unsafe_allow_html=True)
     page = st.sidebar.radio(
         "메뉴",
         ["링크 분석", "직접 입력", "데이터 대시보드"],
         label_visibility="collapsed",
+        key="nav_page",
     )
 
     model = load_model()
