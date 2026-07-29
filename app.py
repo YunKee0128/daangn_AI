@@ -34,6 +34,39 @@ LANGUAGE_OPTIONS = {
 }
 
 
+CATEGORY_OPTIONS = ["전자기기", "가구", "생활가전", "스포츠", "도서", "패션", "기타"]
+
+CATEGORY_LABELS = {
+    "전자기기": "전자기기",
+    "가구": "가구",
+    "생활가전": "생활가전",
+    "스포츠": "스포츠",
+    "도서": "도서",
+    "패션": "패션",
+    "기타": "기타",
+}
+
+CATEGORY_EXAMPLES = {
+    "전자기기": ["아이폰", "노트북", "에어팟", "모니터"],
+    "가구": ["책상", "의자", "침대", "수납장"],
+    "생활가전": ["냉장고", "전자레인지", "청소기", "선풍기"],
+    "스포츠": ["자전거", "축구화", "라켓", "운동기구"],
+    "도서": ["전공책", "토익책", "문제집", "소설"],
+    "패션": ["패딩", "신발", "가방", "모자"],
+    "기타": ["생활용품", "문구", "굿즈", "기타 물건"],
+}
+
+CATEGORY_PLACEHOLDERS = {
+    "전자기기": "예: 아이폰 13 128기가 판매합니다",
+    "가구": "예: 원목 책상 판매합니다",
+    "생활가전": "예: 전자레인지 깨끗하게 사용했습니다",
+    "스포츠": "예: 자전거 상태 좋아요",
+    "도서": "예: 토익 문제집 새 책입니다",
+    "패션": "예: 나이키 운동화 판매합니다",
+    "기타": "예: 생활용품 일괄 판매합니다",
+}
+
+
 def inject_theme_style():
     st.markdown(
         """
@@ -295,6 +328,48 @@ def inject_theme_style():
             font-size: 0.82rem;
             font-weight: 900;
             margin: 16px 0 8px;
+        }
+
+        .example-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0 20px;
+        }
+
+        .example-chip {
+            background: #fff7ed;
+            border: 1px solid #ffe2c6;
+            color: #9a4a05;
+            border-radius: 999px;
+            padding: 7px 11px;
+            font-size: 0.86rem;
+            font-weight: 800;
+        }
+
+        .input-section {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px 24px 12px;
+            margin-top: 14px;
+            box-shadow: 0 14px 34px rgba(31, 41, 51, 0.08);
+        }
+
+        div[data-testid="stPills"] button {
+            border-radius: 14px !important;
+            padding: 12px 16px !important;
+            border: 1px solid #edf0f2 !important;
+            background: #ffffff !important;
+            box-shadow: 0 8px 18px rgba(31, 41, 51, 0.05);
+            font-weight: 900 !important;
+        }
+
+        div[data-testid="stPills"] button[aria-pressed="true"] {
+            border-color: var(--karrot) !important;
+            background: #fff1e5 !important;
+            color: var(--karrot) !important;
+            box-shadow: 0 10px 20px rgba(255, 111, 15, 0.13);
         }
 
         div[data-testid="stForm"] {
@@ -685,7 +760,7 @@ def extract_item_info_from_link(url):
 def predict_price_from_item(item_info, manual_price=None):
     model = load_model()
     title = item_info["제목"]
-    category = make_category(title)
+    category = item_info.get("카테고리") or make_category(title)
 
     actual_price = manual_price if manual_price is not None else item_info.get("가격_numeric")
     if actual_price is None or pd.isna(actual_price):
@@ -910,21 +985,55 @@ def render_analysis_page():
 
 def render_manual_page():
     render_hero(
-        "중고거래, 더 쉽게 판단하세요",
-        "상품명, 판매가, 판매자 설명을 입력하면 예상 시세와 구매 전 확인할 점을 바로 보여줍니다.",
-        kicker="중고거래 가격 체크",
+        "무슨 물건인지 먼저 골라주세요",
+        "상품 종류를 고르면 입력 예시가 바뀌고, 더 자연스럽게 가격을 확인할 수 있어요.",
+        kicker="중고거래 시세 확인",
     )
 
     with st.form("manual_form"):
-        title = st.text_input("상품명", placeholder="예: 아이폰 13 128기가 판매합니다")
+        st.markdown(
+            """
+            <div class="form-heading"><span>1</span>상품 종류</div>
+            <div class="form-note">가장 가까운 종류를 먼저 선택하세요. 정확히 몰라도 괜찮아요.</div>
+            """,
+            unsafe_allow_html=True,
+        )
+        selected_category = st.pills(
+            "상품 종류",
+            CATEGORY_OPTIONS,
+            default="전자기기",
+            format_func=lambda value: CATEGORY_LABELS[value],
+            key="manual_category",
+            label_visibility="collapsed",
+            width="stretch",
+        )
+        selected_category = selected_category or "기타"
+        examples = CATEGORY_EXAMPLES.get(selected_category, CATEGORY_EXAMPLES["기타"])
+        st.markdown(
+            '<div class="example-chips">'
+            + "".join(f'<span class="example-chip">{escape(example)}</span>' for example in examples)
+            + "</div>",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            """
+            <div class="form-heading"><span>2</span>상품 정보</div>
+            <div class="form-note">제목과 판매가만 넣어도 확인할 수 있어요. 설명을 넣으면 구매 도움말이 더 좋아집니다.</div>
+            """,
+            unsafe_allow_html=True,
+        )
+        title = st.text_input("상품명", placeholder=CATEGORY_PLACEHOLDERS.get(selected_category, CATEGORY_PLACEHOLDERS["기타"]))
         col1, col2 = st.columns([1, 1])
         with col1:
             price = st.number_input("판매가", min_value=0, step=1000, value=10000)
         with col2:
-            language_label = st.selectbox("설명 언어", list(LANGUAGE_OPTIONS.keys()), key="manual_language")
-        description = st.text_area("판매자 설명", placeholder="상품 상태, 구성품, 하자 여부 등을 입력하세요.")
-        use_ai = st.checkbox("구매 도움말 만들기", value=True, key="manual_ai")
-        submitted = st.form_submit_button("분석하기", type="primary")
+            language_label = st.selectbox("도움말 언어", list(LANGUAGE_OPTIONS.keys()), key="manual_language")
+        description = st.text_area("판매자 설명", placeholder="예: 사용 기간, 구성품, 하자 여부, 직거래 위치 등을 적어주세요.")
+
+        st.markdown('<div class="option-row-title">추가 옵션</div>', unsafe_allow_html=True)
+        use_ai = st.checkbox("구매 도움말 받기", value=True, key="manual_ai")
+        submitted = st.form_submit_button("가격 확인하기", type="primary", use_container_width=True)
 
     if not submitted:
         return
@@ -935,6 +1044,7 @@ def render_manual_page():
 
     item_info = {
         "제목": title.strip(),
+        "카테고리": selected_category,
         "가격": format_won(price),
         "가격_numeric": int(price),
         "상세설명": description.strip() or "상세설명 없음",
