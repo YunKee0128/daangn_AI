@@ -1,0 +1,10 @@
+streamlit
+pandas
+numpy
+scikit-learn
+joblib
+python-dotenv
+langchain
+langchain-openai
+langchain-core
+openai
