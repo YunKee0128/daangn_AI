@@ -1,6 +1,7 @@
 import os
 import re
 import urllib.parse
+from html import escape
 from pathlib import Path
 
 import joblib
@@ -18,7 +19,7 @@ DATA_PATH = BASE_DIR / "used_items_cleaned.csv"
 
 st.set_page_config(
     page_title="유학생 중고거래 다국어 도우미",
-    page_icon="🛒",
+    page_icon="🥕",
     layout="wide",
 )
 
@@ -31,6 +32,238 @@ LANGUAGE_OPTIONS = {
     "ไทย": "Thai",
     "한국어": "Korean",
 }
+
+
+def inject_theme_style():
+    st.markdown(
+        """
+        <style>
+        :root {
+            --karrot: #ff6f0f;
+            --karrot-dark: #e85d00;
+            --ink: #1f2933;
+            --muted: #6b7280;
+            --line: #edf0f2;
+            --soft: #fff7ed;
+            --green: #17a673;
+            --red: #e5484d;
+            --blue: #2f80ed;
+        }
+
+        .stApp {
+            background: #fffaf5;
+            color: var(--ink);
+        }
+
+        [data-testid="stHeader"] {
+            background: rgba(255, 250, 245, 0.92);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-testid="stSidebar"] {
+            background: #ffffff;
+            border-right: 1px solid var(--line);
+        }
+
+        [data-testid="stSidebar"] * {
+            color: var(--ink);
+        }
+
+        .block-container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+            max-width: 1180px;
+        }
+
+        h1, h2, h3 {
+            color: var(--ink);
+            letter-spacing: 0;
+        }
+
+        .app-hero {
+            background: linear-gradient(135deg, #fff3e8 0%, #ffffff 58%, #eefaf4 100%);
+            border: 1px solid #ffe2c6;
+            border-radius: 22px;
+            padding: 30px 34px;
+            margin-bottom: 22px;
+            box-shadow: 0 18px 45px rgba(255, 111, 15, 0.10);
+        }
+
+        .hero-kicker {
+            color: var(--karrot);
+            font-size: 0.92rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero-title {
+            color: var(--ink);
+            font-size: clamp(2.1rem, 4vw, 3.7rem);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 12px;
+        }
+
+        .hero-copy {
+            color: #4b5563;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 760px;
+        }
+
+        div[data-testid="stForm"] {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px 22px 12px;
+            box-shadow: 0 14px 34px rgba(31, 41, 51, 0.08);
+        }
+
+        div[data-testid="stTextInput"] input,
+        div[data-testid="stNumberInput"] input,
+        textarea,
+        div[data-baseweb="select"] > div {
+            background-color: #fbfbfb !important;
+            border-color: #e5e7eb !important;
+            color: var(--ink) !important;
+            border-radius: 12px !important;
+        }
+
+        div[data-testid="stTextInput"] input:focus,
+        div[data-testid="stNumberInput"] input:focus,
+        textarea:focus {
+            border-color: var(--karrot) !important;
+            box-shadow: 0 0 0 3px rgba(255, 111, 15, 0.12) !important;
+        }
+
+        .stButton > button,
+        div[data-testid="stFormSubmitButton"] button {
+            background: var(--karrot);
+            color: white;
+            border: 0;
+            border-radius: 12px;
+            padding: 0.68rem 1.2rem;
+            font-weight: 800;
+            box-shadow: 0 10px 22px rgba(255, 111, 15, 0.24);
+        }
+
+        .stButton > button:hover,
+        div[data-testid="stFormSubmitButton"] button:hover {
+            background: var(--karrot-dark);
+            color: white;
+            border: 0;
+        }
+
+        .info-card {
+            min-height: 126px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 12px 28px rgba(31, 41, 51, 0.07);
+            margin-bottom: 14px;
+        }
+
+        .info-label {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: var(--ink);
+            font-size: 1.45rem;
+            font-weight: 900;
+            line-height: 1.25;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+        }
+
+        .price-panel {
+            background: #ffffff;
+            border: 1px solid #ffe2c6;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 14px 32px rgba(255, 111, 15, 0.10);
+            margin: 10px 0 18px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 15px;
+            border-radius: 999px;
+            color: #ffffff;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .small-muted {
+            color: var(--muted);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .ai-panel {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 14px 32px rgba(31, 41, 51, 0.07);
+        }
+
+        .section-title {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--ink);
+            margin: 26px 0 12px;
+        }
+
+        [data-testid="stMetric"] {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 24px rgba(31, 41, 51, 0.06);
+        }
+
+        [data-testid="stMetricLabel"] {
+            color: var(--muted);
+        }
+
+        [data-testid="stMetricValue"] {
+            color: var(--ink);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_hero(title, subtitle, kicker="부산외국어대학교 유학생 중고거래 도우미"):
+    st.markdown(
+        f"""
+        <div class="app-hero">
+            <div class="hero-kicker">{escape(kicker)}</div>
+            <div class="hero-title">{escape(title)}</div>
+            <div class="hero-copy">{escape(subtitle)}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_info_card(label, value):
+    st.markdown(
+        f"""
+        <div class="info-card">
+            <div class="info-label">{escape(str(label))}</div>
+            <div class="info-value">{escape(str(value))}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def get_secret(name: str, default: str = "") -> str:
@@ -295,39 +528,38 @@ def build_prompt(item_info, price_result, language):
 
 [상품 정보]
 상품명: {item_info['제목']}
-카테고리: {price_result.get('카테고리', '기타')}
-판매 가격: {format_won(price_result.get('실제가격'))}
-수집 데이터 기준 참고 가격: {format_won(price_result.get('예측적정가격'))}
-가격 판단: {price_result.get('가격판단', '판단 불가')}
-상세설명: {item_info.get('상세설명', '상세설명 없음')}
+분류: {price_result.get('카테고리', '기타')}
+판매가: {format_won(price_result.get('실제가격'))}
+예상 시세: {format_won(price_result.get('예측적정가격'))}
+가격 상태: {price_result.get('가격판단', '판단 불가')}
+판매자 설명: {item_info.get('상세설명', '상세설명 없음')}
 
-답변 형식:
-### 1. Product Summary
+답변은 {language}로 자연스럽게 작성하고, 아래 4개 제목도 {language}로 번역해서 써줘.
+너무 딱딱한 분석 보고서처럼 쓰지 말고 실제 구매자에게 알려주는 앱 안내처럼 짧고 명확하게 써줘.
+
+### 상품 한눈에 보기
 상품이 무엇인지 쉽게 설명해줘.
 
-### 2. Price Check
-판매 가격이 참고 가격과 비교했을 때 저렴한지, 적정한지, 비싼지 설명해줘. 참고 가격은 수집 데이터 기반 예측값이라 절대적인 시세가 아니라고 자연스럽게 알려줘.
+### 가격 괜찮나요?
+판매가가 예상 시세보다 싼지, 적당한지, 비싼지 알려줘. 예상 시세는 앱이 가진 거래 데이터로 계산한 값이라 실제 시세와 다를 수 있다고 짧게 덧붙여줘.
 
-### 3. Things to Check Before Buying
+### 사기 전에 확인할 것
 구매 전에 확인해야 할 점을 알려줘.
 
-### 4. Message to Seller
+### 판매자에게 보낼 말
 판매자에게 보낼 수 있는 짧은 메시지를 만들어줘.
-
-### 5. Simple Korean Words
-게시글에 나오는 중요한 한국어 단어를 {language}로 설명해줘.
 """.strip()
 
 
 def generate_multilingual_result(item_info, price_result, language):
     api_key = get_secret("OPENAI_API_KEY")
     if not api_key:
-        return "OPENAI_API_KEY가 설정되지 않아 AI 다국어 설명을 생성하지 않았습니다."
+        return "OpenAI API Key가 없어 구매 도움말을 만들지 못했습니다."
 
     try:
         from openai import OpenAI
     except Exception:
-        return "openai 패키지가 설치되어 있지 않아 AI 다국어 설명을 생성하지 않았습니다."
+        return "openai 패키지가 설치되어 있지 않아 구매 도움말을 만들지 못했습니다."
 
     client = OpenAI(api_key=api_key)
     response = client.chat.completions.create(
@@ -356,24 +588,25 @@ def analyze_used_item_link(url, language="English", manual_price=None, use_ai=Tr
 
 def render_status_badge(status):
     color = {
-        "저렴": "#0f766e",
-        "적정": "#2563eb",
-        "비쌈": "#dc2626",
-        "가격 입력 필요": "#9333ea",
+        "저렴": "#17a673",
+        "적정": "#2f80ed",
+        "비쌈": "#e5484d",
+        "가격 입력 필요": "#ff6f0f",
         "판단 불가": "#6b7280",
     }.get(status, "#6b7280")
     st.markdown(
         f"""
-        <div style="display:inline-block;padding:8px 14px;border-radius:999px;
-        background:{color};color:white;font-weight:700;">{status}</div>
+        <span class="status-pill" style="background:{color};">{escape(str(status))}</span>
         """,
         unsafe_allow_html=True,
     )
 
 
 def render_analysis_page():
-    st.title("유학생 중고거래 다국어 도우미")
-    st.caption("당근마켓 게시글 링크를 분석해 상품 정보, 참고 가격, 다국어 거래 안내를 제공합니다.")
+    render_hero(
+        "링크로 상품 확인하기",
+        "당근마켓 링크를 넣으면 판매가와 예상 시세를 비교하고, 외국어로 이해하기 쉬운 구매 도움말을 보여줍니다.",
+    )
 
     with st.form("analysis_form"):
         url = st.text_input("당근마켓 게시글 링크", placeholder="https://www.daangn.com/kr/buy-sell/...")
@@ -385,7 +618,7 @@ def render_analysis_page():
         with col3:
             language_label = st.selectbox("설명 언어", list(LANGUAGE_OPTIONS.keys()))
 
-        use_ai = st.checkbox("AI 다국어 설명 생성", value=True)
+        use_ai = st.checkbox("구매 도움말 만들기", value=True)
         submitted = st.form_submit_button("분석하기", type="primary")
 
     if not submitted:
@@ -412,38 +645,56 @@ def render_analysis_page():
     item_info = result["상품정보"]
     price_result = result["가격판단결과"]
 
-    st.subheader("상품 정보")
+    st.markdown('<div class="section-title">상품 정보</div>', unsafe_allow_html=True)
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("상품명", item_info["제목"])
-    c2.metric("추출 가격", item_info["가격"])
-    c3.metric("카테고리", price_result["카테고리"])
-    c4.metric("참고 가격", format_won(price_result["예측적정가격"]))
+    with c1:
+        render_info_card("상품명", item_info["제목"])
+    with c2:
+        render_info_card("판매가", item_info["가격"])
+    with c3:
+        render_info_card("분류", price_result["카테고리"])
+    with c4:
+        render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
 
-    st.markdown("#### 가격 판단")
+    st.markdown('<div class="price-panel">', unsafe_allow_html=True)
+    st.markdown("#### 가격 체크")
     render_status_badge(price_result["가격판단"])
-    st.write(
-        f"판매 가격 {format_won(price_result['실제가격'])} / "
-        f"수집 데이터 기준 참고 가격 {format_won(price_result['예측적정가격'])}"
+    st.markdown(
+        f"""
+        <div class="small-muted">
+        판매가 <b>{escape(format_won(price_result['실제가격']))}</b> /
+        예상 시세 <b>{escape(format_won(price_result['예측적정가격']))}</b>
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    with st.expander("추출된 상세설명", expanded=True):
+    with st.expander("판매자 설명", expanded=True):
         st.write(item_info["상세설명"])
 
     if result["AI설명"]:
-        st.subheader("AI 다국어 설명")
-        st.markdown(result["AI설명"])
+        st.markdown('<div class="section-title">구매 도움말</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            st.markdown(result["AI설명"])
 
 
 def render_manual_page():
-    st.title("직접 입력 가격 분석")
-    st.caption("링크 접근이 안 될 때 상품명과 가격을 직접 입력해서 참고 가격을 확인할 수 있습니다.")
+    render_hero(
+        "중고거래, 더 쉽게 판단하세요",
+        "상품명, 판매가, 판매자 설명을 입력하면 예상 시세와 구매 전 확인할 점을 바로 보여줍니다.",
+        kicker="중고거래 가격 체크",
+    )
 
     with st.form("manual_form"):
         title = st.text_input("상품명", placeholder="예: 아이폰 13 128기가 판매합니다")
-        price = st.number_input("판매 가격", min_value=0, step=1000, value=10000)
-        description = st.text_area("상세설명", placeholder="상품 상태, 구성품, 하자 여부 등을 입력하세요.")
-        language_label = st.selectbox("설명 언어", list(LANGUAGE_OPTIONS.keys()), key="manual_language")
-        use_ai = st.checkbox("AI 다국어 설명 생성", value=True, key="manual_ai")
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            price = st.number_input("판매가", min_value=0, step=1000, value=10000)
+        with col2:
+            language_label = st.selectbox("설명 언어", list(LANGUAGE_OPTIONS.keys()), key="manual_language")
+        description = st.text_area("판매자 설명", placeholder="상품 상태, 구성품, 하자 여부 등을 입력하세요.")
+        use_ai = st.checkbox("구매 도움말 만들기", value=True, key="manual_ai")
         submitted = st.form_submit_button("분석하기", type="primary")
 
     if not submitted:
@@ -462,21 +713,42 @@ def render_manual_page():
     }
     price_result = predict_price_from_item(item_info, manual_price=int(price))
 
-    st.subheader("가격 분석 결과")
+    st.markdown('<div class="section-title">가격 분석 결과</div>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
-    col1.metric("카테고리", price_result["카테고리"])
-    col2.metric("판매 가격", format_won(price_result["실제가격"]))
-    col3.metric("참고 가격", format_won(price_result["예측적정가격"]))
+    with col1:
+        render_info_card("분류", price_result["카테고리"])
+    with col2:
+        render_info_card("판매가", format_won(price_result["실제가격"]))
+    with col3:
+        render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
+
+    st.markdown('<div class="price-panel">', unsafe_allow_html=True)
+    st.markdown("#### 가격 체크")
     render_status_badge(price_result["가격판단"])
+    st.markdown(
+        f"""
+        <div class="small-muted">
+        예상 시세는 앱이 가진 거래 데이터로 계산한 값입니다. 실제 거래 전에는 상품 상태와 구성품을 함께 확인하세요.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if use_ai:
-        with st.spinner("AI 설명을 생성하는 중입니다..."):
-            st.subheader("AI 다국어 설명")
-            st.markdown(generate_multilingual_result(item_info, price_result, LANGUAGE_OPTIONS[language_label]))
+        with st.spinner("구매 도움말을 만드는 중입니다..."):
+            st.markdown('<div class="section-title">구매 도움말</div>', unsafe_allow_html=True)
+            ai_text = generate_multilingual_result(item_info, price_result, LANGUAGE_OPTIONS[language_label])
+            with st.container(border=True):
+                st.markdown(ai_text)
 
 
 def render_dashboard_page():
-    st.title("수집 데이터 대시보드")
+    render_hero(
+        "수집 데이터 대시보드",
+        "부산 지역 중고거래 수집 데이터를 카테고리와 가격 기준으로 살펴볼 수 있습니다.",
+        kicker="거래 데이터 보기",
+    )
     df = load_data()
     if df.empty:
         st.warning("used_items_cleaned.csv 파일을 찾을 수 없습니다.")
@@ -510,9 +782,11 @@ def render_dashboard_page():
 
 def main():
     load_dotenv_if_exists()
+    inject_theme_style()
 
-    st.sidebar.title("메뉴")
-    page = st.sidebar.radio("이동", ["링크 분석", "직접 입력", "데이터 대시보드"])
+    st.sidebar.title("유학생 거래 도우미")
+    st.sidebar.caption("가격 확인부터 다국어 메시지까지")
+    page = st.sidebar.radio("이동", ["직접 입력", "링크 분석", "데이터 대시보드"])
 
     model = load_model()
     if model is None:
@@ -523,10 +797,10 @@ def main():
     if not get_secret("OPENAI_API_KEY"):
         st.sidebar.info("AI 설명을 사용하려면 OPENAI_API_KEY를 설정하세요.")
 
-    if page == "링크 분석":
-        render_analysis_page()
-    elif page == "직접 입력":
+    if page == "직접 입력":
         render_manual_page()
+    elif page == "링크 분석":
+        render_analysis_page()
     else:
         render_dashboard_page()
 
