@@ -67,6 +67,608 @@ CATEGORY_PLACEHOLDERS = {
 }
 
 
+LANG_CODE_MAP = {
+    "한국어": "ko",
+    "English": "en",
+    "日本語": "ja",
+    "中文": "zh",
+    "Tiếng Việt": "vi",
+    "ไทย": "th",
+}
+CODE_TO_LANG_LABEL = {code: label for label, code in LANG_CODE_MAP.items()}
+
+STATUS_KEY_MAP = {
+    "저렴": "cheap",
+    "적정": "fair",
+    "비쌈": "expensive",
+    "가격 입력 필요": "need_price",
+    "판단 불가": "unknown",
+}
+
+NAV_KEY_TO_TKEY = {
+    "링크 분석": "nav_link_analysis",
+    "직접 입력": "nav_manual_input",
+    "데이터 대시보드": "nav_dashboard",
+    "메시지 번역": "nav_translate",
+}
+
+CATEGORY_LABELS_I18N = {
+    "ko": {"전자기기": "전자기기", "가구": "가구", "생활가전": "생활가전", "스포츠": "스포츠", "도서": "도서", "패션": "패션", "기타": "기타"},
+    "en": {"전자기기": "Electronics", "가구": "Furniture", "생활가전": "Home Appliances", "스포츠": "Sports", "도서": "Books", "패션": "Fashion", "기타": "Other"},
+    "ja": {"전자기기": "電子機器", "가구": "家具", "생활가전": "生活家電", "스포츠": "スポーツ", "도서": "本", "패션": "ファッション", "기타": "その他"},
+    "zh": {"전자기기": "电子产品", "가구": "家具", "생활가전": "生活家电", "스포츠": "运动用品", "도서": "图书", "패션": "时尚", "기타": "其他"},
+    "vi": {"전자기기": "Đồ điện tử", "가구": "Nội thất", "생활가전": "Đồ gia dụng", "스포츠": "Thể thao", "도서": "Sách", "패션": "Thời trang", "기타": "Khác"},
+    "th": {"전자기기": "อุปกรณ์อิเล็กทรอนิกส์", "가구": "เฟอร์นิเจอร์", "생활가전": "เครื่องใช้ไฟฟ้า", "스포츠": "กีฬา", "도서": "หนังสือ", "패션": "แฟชั่น", "기타": "อื่นๆ"},
+}
+
+TRANSLATIONS = {
+    "ko": {
+        "ui_language_label": "언어 (UI)",
+        "brand_title_html": "유학생<br>거래 도우미",
+        "brand_copy": "가격 확인부터 외국어 메시지까지 한 번에 도와드려요.",
+        "refresh_button": "↻ 새로고침",
+        "menu_label": "MENU",
+        "home_help": "첫 화면으로 돌아가기",
+        "status_model_ready": "시세 모델 준비 완료",
+        "status_model_missing": "시세 모델을 찾을 수 없어요",
+        "status_ai_key_missing": "구매 도움말은 키 설정 후 사용 가능",
+        "nav_link_analysis": "링크 분석",
+        "nav_manual_input": "직접 입력",
+        "nav_dashboard": "데이터 대시보드",
+        "nav_translate": "메시지 번역",
+        "app_kicker": "부산외국어대학교 유학생 중고거래 도우미",
+        "price_check_result": "가격 체크 결과",
+        "actual_price": "판매가",
+        "expected_price": "예상 시세",
+        "error_info_prefix": "오류 정보: ",
+        "status_badge_cheap": "저렴", "status_title_cheap": "좋은 거래일 가능성이 높아요",
+        "status_copy_cheap": "판매가가 예상 시세보다 낮은 편입니다. 다만 너무 저렴한 상품은 상태, 구성품, 직거래 장소를 한 번 더 확인하세요.",
+        "status_badge_fair": "적정", "status_title_fair": "무난한 가격대로 보여요",
+        "status_copy_fair": "판매가가 예상 시세와 크게 차이 나지 않습니다. 상품 상태와 구성품이 설명과 맞는지 확인하면 좋아요.",
+        "status_badge_expensive": "비쌈", "status_title_expensive": "가격이 높은 편이에요",
+        "status_copy_expensive": "판매가가 예상 시세보다 높게 나왔습니다. 같은 상품의 다른 매물과 비교하거나 가격 조정을 요청해보세요.",
+        "status_badge_need_price": "가격 입력 필요", "status_title_need_price": "판매가를 입력하면 판단할 수 있어요",
+        "status_copy_need_price": "게시글에서 가격을 읽지 못했습니다. 판매가를 직접 입력하면 예상 시세와 비교해드릴게요.",
+        "status_badge_unknown": "판단 불가", "status_title_unknown": "지금은 판단하기 어려워요",
+        "status_copy_unknown": "모델이나 가격 정보가 부족합니다. 상품명과 가격을 더 구체적으로 입력해보세요.",
+        "link_hero_title": "링크만 붙여넣으면 끝",
+        "link_hero_subtitle": "판매가가 괜찮은지 바로 확인하고, 외국어로 보낼 메시지까지 한 번에 준비하세요.",
+        "link_step1_title": "링크 붙여넣기", "link_step1_copy": "당근 게시글 주소를 그대로 넣어요.",
+        "link_step2_title": "판매가 확인", "link_step2_copy": "자동 인식이 안 되면 직접 입력해요.",
+        "link_step3_title": "구매 판단", "link_step3_copy": "예상 시세와 거래 메시지를 확인해요.",
+        "link_form1_heading": "상품 링크", "link_form1_note": "당근마켓 게시글 주소를 복사해서 붙여넣으세요.",
+        "link_form2_heading": "상품 종류", "link_form2_note": "링크만으로 종류를 알기 어려울 때를 위해 먼저 골라주세요.",
+        "option_row_title": "확인 옵션",
+        "link_checkbox_manual_price": "판매가 직접 입력",
+        "price_label": "판매가",
+        "language_select_label": "언어",
+        "link_checkbox_use_ai": "도움말 받기",
+        "link_submit": "상품 확인하기",
+        "link_spinner_analyzing": "게시글을 읽고 가격을 분석하는 중입니다...",
+        "manual_spinner_generating": "구매 도움말을 만드는 중입니다...",
+        "notice_need_link_title": "상품 링크를 넣어주세요",
+        "notice_need_link_copy": "당근마켓 게시글 주소를 복사해서 붙여넣으면 바로 확인할 수 있어요.",
+        "notice_link_error_title": "링크를 읽지 못했어요",
+        "notice_link_error_copy": "게시글 접근이 제한되었거나 주소가 올바르지 않을 수 있어요. 같은 상품을 직접 입력 메뉴에서 확인해보세요.",
+        "section_item_info": "상품 정보",
+        "info_title": "상품명", "info_price": "판매가", "info_category": "분류", "info_expected_price": "예상 시세",
+        "expander_seller_desc": "판매자 설명",
+        "section_purchase_help": "구매 도움말",
+        "manual_hero_title": "무슨 물건인지 먼저 골라주세요",
+        "manual_hero_subtitle": "상품 종류를 고르면 입력 예시가 바뀌고, 더 자연스럽게 가격을 확인할 수 있어요.",
+        "manual_form1_heading": "상품 종류", "manual_form1_note": "가장 가까운 종류를 먼저 선택하세요. 정확히 몰라도 괜찮아요.",
+        "manual_form2_heading": "상품 정보", "manual_form2_note": "제목과 판매가만 넣어도 확인할 수 있어요. 설명을 넣으면 구매 도움말이 더 좋아집니다.",
+        "manual_title_label": "상품명", "manual_price_label": "판매가", "manual_help_language_label": "도움말 언어",
+        "manual_desc_label": "판매자 설명",
+        "manual_desc_placeholder": "예: 사용 기간, 구성품, 하자 여부, 직거래 위치 등을 적어주세요.",
+        "manual_option_row_title": "추가 옵션",
+        "manual_checkbox_use_ai": "구매 도움말 받기",
+        "manual_submit": "가격 확인하기",
+        "notice_need_title_title": "상품명을 입력해주세요",
+        "notice_need_title_copy": "예: 아이폰 13, 책상, 자전거처럼 상품을 알아볼 수 있게 적으면 더 정확해져요.",
+        "section_price_analysis": "가격 분석 결과",
+        "price_disclaimer": "예상 시세는 앱이 가진 거래 데이터로 계산한 값입니다. 실제 거래 전에는 상품 상태와 구성품을 함께 확인하세요.",
+        "dashboard_hero_title": "부산 중고거래 시세 보기",
+        "dashboard_hero_subtitle": "수집한 상품 데이터를 카테고리별로 훑어보고, 궁금한 물건을 바로 검색해보세요.",
+        "dashboard_no_data": "used_items_cleaned.csv 파일을 찾을 수 없습니다.",
+        "section_overview": "한눈에 보기",
+        "overview_total_items": "등록 상품", "overview_avg_price": "평균 시세", "overview_median_price": "중간 가격", "overview_category_count": "상품 종류",
+        "section_category_price": "카테고리별 시세",
+        "category_stat_template": "{count:,}개 상품 · 평균 {avg}",
+        "section_browse_items": "상품 찾아보기",
+        "filter_category_label": "카테고리", "filter_keyword_label": "검색어", "filter_sort_label": "정렬",
+        "sort_price_asc": "낮은 가격순", "sort_price_desc": "높은 가격순", "sort_recent": "최근 수집순",
+        "all_option": "전체",
+        "item_count_template": "{count:,}개 상품",
+        "view_post_link": "게시글 보기",
+        "expander_full_table": "전체 데이터 표로 보기",
+        "col_town": "수집동네", "col_title": "제목", "col_price": "가격", "col_category": "카테고리", "col_link": "게시글링크",
+        "translate_hero_title": "판매자에게 보낼 말, 한국어로 바꿔드려요",
+        "translate_hero_subtitle": "가격 조회 없이도 언제든 메시지만 번역해서 바로 복사해 쓸 수 있어요.",
+        "translate_source_lang_label": "내 언어",
+        "translate_input_label": "내가 쓴 메시지",
+        "translate_input_placeholder": "예: Is this item still available? Can we meet near the school tomorrow?",
+        "translate_button": "한국어로 번역하기",
+        "translating_spinner": "번역하는 중입니다...",
+        "translate_empty_message": "번역할 메시지를 입력해주세요.",
+        "openai_key_missing_help": "OpenAI API Key가 없어 구매 도움말을 만들지 못했습니다.",
+        "openai_pkg_missing_help": "openai 패키지가 설치되어 있지 않아 구매 도움말을 만들지 못했습니다.",
+        "openai_key_missing_translate": "OpenAI API Key가 없어 번역하지 못했습니다.",
+        "openai_pkg_missing_translate": "openai 패키지가 설치되어 있지 않아 번역하지 못했습니다.",
+    },
+    "en": {
+        "ui_language_label": "UI Language",
+        "brand_title_html": "Student<br>Trade Helper",
+        "brand_copy": "From price checks to foreign-language messages, all in one place.",
+        "refresh_button": "↻ Refresh",
+        "menu_label": "MENU",
+        "home_help": "Back to home",
+        "status_model_ready": "Price model ready",
+        "status_model_missing": "Price model not found",
+        "status_ai_key_missing": "Purchase help needs an API key",
+        "nav_link_analysis": "Link Analysis",
+        "nav_manual_input": "Manual Entry",
+        "nav_dashboard": "Data Dashboard",
+        "nav_translate": "Translate Message",
+        "app_kicker": "Busan University of Foreign Studies — Used Goods Helper",
+        "price_check_result": "Price Check Result",
+        "actual_price": "Listed Price",
+        "expected_price": "Expected Price",
+        "error_info_prefix": "Error details: ",
+        "status_badge_cheap": "Cheap", "status_title_cheap": "Looks like a good deal",
+        "status_copy_cheap": "The listed price is lower than expected. If it seems unusually cheap, double-check the condition, included items, and meeting location.",
+        "status_badge_fair": "Fair", "status_title_fair": "Looks like a reasonable price",
+        "status_copy_fair": "The listed price is close to the expected price. Still worth confirming the item's condition and included items.",
+        "status_badge_expensive": "Pricey", "status_title_expensive": "The price is on the higher side",
+        "status_copy_expensive": "The listed price is higher than expected. Compare with other listings of the same item, or ask for a lower price.",
+        "status_badge_need_price": "Price Needed", "status_title_need_price": "Enter the price to get a judgment",
+        "status_copy_need_price": "We couldn't read a price from the post. Enter it yourself and we'll compare it to the expected price.",
+        "status_badge_unknown": "Unable to Judge", "status_title_unknown": "Hard to judge right now",
+        "status_copy_unknown": "There isn't enough model or price information. Try entering a more specific title and price.",
+        "link_hero_title": "Just paste the link",
+        "link_hero_subtitle": "Check if the price is fair and get a ready-to-send message in another language, all at once.",
+        "link_step1_title": "Paste the link", "link_step1_copy": "Paste the Karrot (당근마켓) post URL as-is.",
+        "link_step2_title": "Check the price", "link_step2_copy": "If it's not detected automatically, enter it yourself.",
+        "link_step3_title": "Decide whether to buy", "link_step3_copy": "Check the expected price and the chat message.",
+        "link_form1_heading": "Item Link", "link_form1_note": "Copy and paste the Karrot post URL.",
+        "link_form2_heading": "Item Type", "link_form2_note": "Pick this first in case the type can't be guessed from the link alone.",
+        "option_row_title": "Options",
+        "link_checkbox_manual_price": "Enter price manually",
+        "price_label": "Price",
+        "language_select_label": "Language",
+        "link_checkbox_use_ai": "Get purchase help",
+        "link_submit": "Check This Item",
+        "link_spinner_analyzing": "Reading the post and analyzing the price...",
+        "manual_spinner_generating": "Generating purchase help...",
+        "notice_need_link_title": "Please enter an item link",
+        "notice_need_link_copy": "Paste the Karrot post URL to check it right away.",
+        "notice_link_error_title": "Couldn't read the link",
+        "notice_link_error_copy": "The post might be restricted or the URL might be wrong. Try checking the same item in Manual Entry instead.",
+        "section_item_info": "Item Info",
+        "info_title": "Item Name", "info_price": "Listed Price", "info_category": "Category", "info_expected_price": "Expected Price",
+        "expander_seller_desc": "Seller's Description",
+        "section_purchase_help": "Purchase Help",
+        "manual_hero_title": "First, pick what kind of item it is",
+        "manual_hero_subtitle": "Choosing a category changes the examples and gives a more natural price check.",
+        "manual_form1_heading": "Item Type", "manual_form1_note": "Pick whichever is closest — it doesn't need to be exact.",
+        "manual_form2_heading": "Item Info", "manual_form2_note": "A title and price are enough. Adding a description makes the purchase help better.",
+        "manual_title_label": "Item Name", "manual_price_label": "Price", "manual_help_language_label": "Help Language",
+        "manual_desc_label": "Seller's Description",
+        "manual_desc_placeholder": "e.g. how long it was used, what's included, any defects, meeting location, etc.",
+        "manual_option_row_title": "Additional Options",
+        "manual_checkbox_use_ai": "Get purchase help",
+        "manual_submit": "Check Price",
+        "notice_need_title_title": "Please enter an item name",
+        "notice_need_title_copy": "e.g. iPhone 13, desk, bicycle — a clear name gives a more accurate result.",
+        "section_price_analysis": "Price Analysis Result",
+        "price_disclaimer": "The expected price is calculated from the app's collected trade data. Always check the item's condition and included items before the actual trade.",
+        "dashboard_hero_title": "Browse Busan resale prices",
+        "dashboard_hero_subtitle": "Browse collected item data by category, or search for something specific.",
+        "dashboard_no_data": "Couldn't find used_items_cleaned.csv.",
+        "section_overview": "Overview",
+        "overview_total_items": "Listed Items", "overview_avg_price": "Average Price", "overview_median_price": "Median Price", "overview_category_count": "Item Types",
+        "section_category_price": "Prices by Category",
+        "category_stat_template": "{count:,} items · avg {avg}",
+        "section_browse_items": "Browse Items",
+        "filter_category_label": "Category", "filter_keyword_label": "Search", "filter_sort_label": "Sort",
+        "sort_price_asc": "Price: Low to High", "sort_price_desc": "Price: High to Low", "sort_recent": "Recently Collected",
+        "all_option": "All",
+        "item_count_template": "{count:,} items",
+        "view_post_link": "View Post",
+        "expander_full_table": "View Full Data Table",
+        "col_town": "Location", "col_title": "Title", "col_price": "Price", "col_category": "Category", "col_link": "Post Link",
+        "translate_hero_title": "We'll turn your message into Korean",
+        "translate_hero_subtitle": "Translate a message anytime, even without a price check, and copy it right away.",
+        "translate_source_lang_label": "My Language",
+        "translate_input_label": "My Message",
+        "translate_input_placeholder": "e.g. Is this item still available? Can we meet near the school tomorrow?",
+        "translate_button": "Translate to Korean",
+        "translating_spinner": "Translating...",
+        "translate_empty_message": "Please enter a message to translate.",
+        "openai_key_missing_help": "No OpenAI API key is set, so purchase help couldn't be generated.",
+        "openai_pkg_missing_help": "The openai package isn't installed, so purchase help couldn't be generated.",
+        "openai_key_missing_translate": "No OpenAI API key is set, so the message couldn't be translated.",
+        "openai_pkg_missing_translate": "The openai package isn't installed, so the message couldn't be translated.",
+    },
+    "ja": {
+        "ui_language_label": "表示言語",
+        "brand_title_html": "留学生<br>取引アシスタント",
+        "brand_copy": "価格チェックから外国語メッセージまで、まとめてサポートします。",
+        "refresh_button": "↻ 更新",
+        "menu_label": "メニュー",
+        "home_help": "最初の画面に戻る",
+        "status_model_ready": "価格モデル準備完了",
+        "status_model_missing": "価格モデルが見つかりません",
+        "status_ai_key_missing": "購入ヘルプはキー設定後に利用可能",
+        "nav_link_analysis": "リンク分析",
+        "nav_manual_input": "直接入力",
+        "nav_dashboard": "データダッシュボード",
+        "nav_translate": "メッセージ翻訳",
+        "app_kicker": "釜山外国語大学 留学生中古取引アシスタント",
+        "price_check_result": "価格チェック結果",
+        "actual_price": "販売価格",
+        "expected_price": "予想相場",
+        "error_info_prefix": "エラー情報: ",
+        "status_badge_cheap": "お得", "status_title_cheap": "良い取引の可能性が高いです",
+        "status_copy_cheap": "販売価格が予想相場より低めです。ただし安すぎる場合は状態・付属品・取引場所を必ず確認しましょう。",
+        "status_badge_fair": "適正", "status_title_fair": "妥当な価格帯に見えます",
+        "status_copy_fair": "販売価格は予想相場と大きく変わりません。商品の状態や付属品が説明と合っているか確認しましょう。",
+        "status_badge_expensive": "高め", "status_title_expensive": "価格が高めです",
+        "status_copy_expensive": "販売価格が予想相場より高くなっています。同じ商品の他の出品と比べるか、値下げを相談してみましょう。",
+        "status_badge_need_price": "価格入力が必要", "status_title_need_price": "価格を入力すると判定できます",
+        "status_copy_need_price": "投稿から価格を読み取れませんでした。価格を直接入力すると予想相場と比較します。",
+        "status_badge_unknown": "判定不可", "status_title_unknown": "現時点では判定が難しいです",
+        "status_copy_unknown": "モデルまたは価格情報が不足しています。商品名と価格をより具体的に入力してみてください。",
+        "link_hero_title": "リンクを貼るだけ",
+        "link_hero_subtitle": "価格が妥当か確認して、外国語で送るメッセージも一度に準備しましょう。",
+        "link_step1_title": "リンクを貼る", "link_step1_copy": "당근(カロット)の投稿URLをそのまま入力します。",
+        "link_step2_title": "価格を確認", "link_step2_copy": "自動で読み取れない場合は直接入力します。",
+        "link_step3_title": "購入を判断", "link_step3_copy": "予想相場と取引メッセージを確認します。",
+        "link_form1_heading": "商品リンク", "link_form1_note": "당근마켓の投稿URLをコピーして貼り付けてください。",
+        "link_form2_heading": "商品の種類", "link_form2_note": "リンクだけでは種類が分かりにくい場合のために先に選んでください。",
+        "option_row_title": "確認オプション",
+        "link_checkbox_manual_price": "販売価格を直接入力",
+        "price_label": "販売価格",
+        "language_select_label": "言語",
+        "link_checkbox_use_ai": "ヘルプを受け取る",
+        "link_submit": "商品を確認する",
+        "link_spinner_analyzing": "投稿を読み込んで価格を分析しています...",
+        "manual_spinner_generating": "購入ヘルプを作成しています...",
+        "notice_need_link_title": "商品リンクを入力してください",
+        "notice_need_link_copy": "당근마켓の投稿URLをコピーして貼り付けるとすぐに確認できます。",
+        "notice_link_error_title": "リンクを読み取れませんでした",
+        "notice_link_error_copy": "投稿へのアクセスが制限されているか、URLが正しくない可能性があります。同じ商品を直接入力メニューで確認してみてください。",
+        "section_item_info": "商品情報",
+        "info_title": "商品名", "info_price": "販売価格", "info_category": "分類", "info_expected_price": "予想相場",
+        "expander_seller_desc": "出品者の説明",
+        "section_purchase_help": "購入ヘルプ",
+        "manual_hero_title": "まずは商品の種類を選んでください",
+        "manual_hero_subtitle": "商品の種類を選ぶと入力例が変わり、より自然に価格を確認できます。",
+        "manual_form1_heading": "商品の種類", "manual_form1_note": "最も近い種類を選んでください。正確でなくても大丈夫です。",
+        "manual_form2_heading": "商品情報", "manual_form2_note": "商品名と価格だけでも確認できます。説明を入れると購入ヘルプの質が上がります。",
+        "manual_title_label": "商品名", "manual_price_label": "販売価格", "manual_help_language_label": "ヘルプの言語",
+        "manual_desc_label": "出品者の説明",
+        "manual_desc_placeholder": "例: 使用期間、付属品、不具合の有無、取引場所などを書いてください。",
+        "manual_option_row_title": "追加オプション",
+        "manual_checkbox_use_ai": "購入ヘルプを受け取る",
+        "manual_submit": "価格を確認する",
+        "notice_need_title_title": "商品名を入力してください",
+        "notice_need_title_copy": "例: iPhone 13、机、自転車のように分かりやすく書くとより正確になります。",
+        "section_price_analysis": "価格分析結果",
+        "price_disclaimer": "予想相場はアプリが持つ取引データから計算した値です。実際の取引前には商品の状態と付属品も確認してください。",
+        "dashboard_hero_title": "釜山の中古取引相場を見る",
+        "dashboard_hero_subtitle": "収集した商品データをカテゴリー別に確認したり、気になる商品を検索できます。",
+        "dashboard_no_data": "used_items_cleaned.csv が見つかりません。",
+        "section_overview": "概要",
+        "overview_total_items": "登録商品数", "overview_avg_price": "平均相場", "overview_median_price": "中央値", "overview_category_count": "商品の種類数",
+        "section_category_price": "カテゴリー別相場",
+        "category_stat_template": "{count:,}件 · 平均 {avg}",
+        "section_browse_items": "商品を探す",
+        "filter_category_label": "カテゴリー", "filter_keyword_label": "検索キーワード", "filter_sort_label": "並び替え",
+        "sort_price_asc": "価格が低い順", "sort_price_desc": "価格が高い順", "sort_recent": "最近収集した順",
+        "all_option": "すべて",
+        "item_count_template": "{count:,}件",
+        "view_post_link": "投稿を見る",
+        "expander_full_table": "全データを表で見る",
+        "col_town": "収集地域", "col_title": "タイトル", "col_price": "価格", "col_category": "カテゴリー", "col_link": "投稿リンク",
+        "translate_hero_title": "送りたいメッセージを韓国語にします",
+        "translate_hero_subtitle": "価格チェックなしでも、いつでもメッセージを翻訳してすぐコピーできます。",
+        "translate_source_lang_label": "自分の言語",
+        "translate_input_label": "書いたメッセージ",
+        "translate_input_placeholder": "例: この商品はまだありますか？明日学校の近くで会えますか？",
+        "translate_button": "韓国語に翻訳する",
+        "translating_spinner": "翻訳しています...",
+        "translate_empty_message": "翻訳するメッセージを入力してください。",
+        "openai_key_missing_help": "OpenAI APIキーが設定されていないため購入ヘルプを作成できませんでした。",
+        "openai_pkg_missing_help": "openaiパッケージがインストールされていないため購入ヘルプを作成できませんでした。",
+        "openai_key_missing_translate": "OpenAI APIキーが設定されていないため翻訳できませんでした。",
+        "openai_pkg_missing_translate": "openaiパッケージがインストールされていないため翻訳できませんでした。",
+    },
+    "zh": {
+        "ui_language_label": "界面语言",
+        "brand_title_html": "留学生<br>交易助手",
+        "brand_copy": "从价格核实到外语消息，一站式帮您搞定。",
+        "refresh_button": "↻ 刷新",
+        "menu_label": "菜单",
+        "home_help": "返回首页",
+        "status_model_ready": "价格模型已就绪",
+        "status_model_missing": "找不到价格模型",
+        "status_ai_key_missing": "设置密钥后才能使用购买帮助",
+        "nav_link_analysis": "链接分析",
+        "nav_manual_input": "手动输入",
+        "nav_dashboard": "数据看板",
+        "nav_translate": "消息翻译",
+        "app_kicker": "釜山外国语大学 留学生二手交易助手",
+        "price_check_result": "价格核实结果",
+        "actual_price": "售价",
+        "expected_price": "预估行情",
+        "error_info_prefix": "错误信息：",
+        "status_badge_cheap": "便宜", "status_title_cheap": "很可能是划算的交易",
+        "status_copy_cheap": "售价低于预估行情。不过如果价格过低，请再次确认商品状态、配件和交易地点。",
+        "status_badge_fair": "合理", "status_title_fair": "价格看起来比较合理",
+        "status_copy_fair": "售价与预估行情相差不大。建议确认商品状态和配件是否与描述一致。",
+        "status_badge_expensive": "偏贵", "status_title_expensive": "价格偏高",
+        "status_copy_expensive": "售价高于预估行情。可以对比同款商品的其他卖家，或尝试请卖家调整价格。",
+        "status_badge_need_price": "需要输入价格", "status_title_need_price": "输入售价即可判断",
+        "status_copy_need_price": "未能从帖子中读取到价格。请直接输入售价，我们会与预估行情进行比较。",
+        "status_badge_unknown": "暂无法判断", "status_title_unknown": "目前难以判断",
+        "status_copy_unknown": "模型或价格信息不足。请尝试输入更具体的商品名称和价格。",
+        "link_hero_title": "只需粘贴链接",
+        "link_hero_subtitle": "立即确认价格是否合理，并一次性准备好外语消息。",
+        "link_step1_title": "粘贴链接", "link_step1_copy": "直接粘贴当根（Karrot）帖子链接。",
+        "link_step2_title": "确认售价", "link_step2_copy": "若无法自动识别，请手动输入。",
+        "link_step3_title": "判断是否购买", "link_step3_copy": "查看预估行情和交易消息。",
+        "link_form1_heading": "商品链接", "link_form1_note": "复制并粘贴当根市场帖子的链接。",
+        "link_form2_heading": "商品类型", "link_form2_note": "若仅凭链接难以判断类型，请先在此选择。",
+        "option_row_title": "确认选项",
+        "link_checkbox_manual_price": "手动输入售价",
+        "price_label": "售价",
+        "language_select_label": "语言",
+        "link_checkbox_use_ai": "获取帮助说明",
+        "link_submit": "确认商品",
+        "link_spinner_analyzing": "正在读取帖子并分析价格...",
+        "manual_spinner_generating": "正在生成购买帮助...",
+        "notice_need_link_title": "请输入商品链接",
+        "notice_need_link_copy": "复制并粘贴当根市场帖子链接即可立即查看。",
+        "notice_link_error_title": "无法读取该链接",
+        "notice_link_error_copy": "帖子访问可能受限，或链接地址有误。可以尝试在“手动输入”菜单中查看同一商品。",
+        "section_item_info": "商品信息",
+        "info_title": "商品名称", "info_price": "售价", "info_category": "分类", "info_expected_price": "预估行情",
+        "expander_seller_desc": "卖家描述",
+        "section_purchase_help": "购买帮助",
+        "manual_hero_title": "请先选择商品类型",
+        "manual_hero_subtitle": "选择商品类型后，输入示例会随之变化，价格核实也会更准确。",
+        "manual_form1_heading": "商品类型", "manual_form1_note": "请先选择最接近的类型，不必完全准确。",
+        "manual_form2_heading": "商品信息", "manual_form2_note": "只填写标题和售价也能查看结果。补充描述会让购买帮助更完善。",
+        "manual_title_label": "商品名称", "manual_price_label": "售价", "manual_help_language_label": "帮助说明语言",
+        "manual_desc_label": "卖家描述",
+        "manual_desc_placeholder": "例如：使用时长、附带物品、是否有瑕疵、交易地点等。",
+        "manual_option_row_title": "更多选项",
+        "manual_checkbox_use_ai": "获取购买帮助",
+        "manual_submit": "确认价格",
+        "notice_need_title_title": "请输入商品名称",
+        "notice_need_title_copy": "例如 iPhone 13、书桌、自行车，写得越具体结果越准确。",
+        "section_price_analysis": "价格分析结果",
+        "price_disclaimer": "预估行情是根据应用收集的交易数据计算得出的。实际交易前请务必确认商品状态和配件。",
+        "dashboard_hero_title": "查看釜山二手交易行情",
+        "dashboard_hero_subtitle": "按类别浏览已收集的商品数据，也可以直接搜索感兴趣的商品。",
+        "dashboard_no_data": "找不到 used_items_cleaned.csv 文件。",
+        "section_overview": "总览",
+        "overview_total_items": "已收录商品", "overview_avg_price": "平均行情", "overview_median_price": "中位价格", "overview_category_count": "商品类型数",
+        "section_category_price": "各类别行情",
+        "category_stat_template": "{count:,}件商品 · 平均 {avg}",
+        "section_browse_items": "浏览商品",
+        "filter_category_label": "类别", "filter_keyword_label": "搜索关键词", "filter_sort_label": "排序",
+        "sort_price_asc": "价格从低到高", "sort_price_desc": "价格从高到低", "sort_recent": "最近收集顺序",
+        "all_option": "全部",
+        "item_count_template": "{count:,}件商品",
+        "view_post_link": "查看帖子",
+        "expander_full_table": "查看完整数据表",
+        "col_town": "收集地区", "col_title": "标题", "col_price": "价格", "col_category": "类别", "col_link": "帖子链接",
+        "translate_hero_title": "帮你把要发的话翻译成韩语",
+        "translate_hero_subtitle": "无需先核实价格，随时都能翻译消息并立即复制使用。",
+        "translate_source_lang_label": "我的语言",
+        "translate_input_label": "我写的消息",
+        "translate_input_placeholder": "例如：这个商品还在吗？明天可以在学校附近见面吗？",
+        "translate_button": "翻译成韩语",
+        "translating_spinner": "翻译中...",
+        "translate_empty_message": "请输入需要翻译的消息。",
+        "openai_key_missing_help": "未设置 OpenAI API 密钥，无法生成购买帮助。",
+        "openai_pkg_missing_help": "未安装 openai 软件包，无法生成购买帮助。",
+        "openai_key_missing_translate": "未设置 OpenAI API 密钥，无法进行翻译。",
+        "openai_pkg_missing_translate": "未安装 openai 软件包，无法进行翻译。",
+    },
+    "vi": {
+        "ui_language_label": "Ngôn ngữ giao diện",
+        "brand_title_html": "Trợ lý<br>giao dịch du học sinh",
+        "brand_copy": "Từ kiểm tra giá đến soạn tin nhắn ngoại ngữ, hỗ trợ bạn trong một nơi.",
+        "refresh_button": "↻ Làm mới",
+        "menu_label": "MENU",
+        "home_help": "Quay về màn hình đầu",
+        "status_model_ready": "Mô hình giá đã sẵn sàng",
+        "status_model_missing": "Không tìm thấy mô hình giá",
+        "status_ai_key_missing": "Cần thiết lập API key để dùng gợi ý mua hàng",
+        "nav_link_analysis": "Phân tích liên kết",
+        "nav_manual_input": "Nhập thủ công",
+        "nav_dashboard": "Bảng dữ liệu",
+        "nav_translate": "Dịch tin nhắn",
+        "app_kicker": "Trợ lý mua bán đồ cũ cho du học sinh — Đại học Ngoại ngữ Busan",
+        "price_check_result": "Kết quả kiểm tra giá",
+        "actual_price": "Giá bán",
+        "expected_price": "Giá dự đoán",
+        "error_info_prefix": "Thông tin lỗi: ",
+        "status_badge_cheap": "Rẻ", "status_title_cheap": "Có khả năng là món hời",
+        "status_copy_cheap": "Giá bán thấp hơn giá dự đoán. Nếu quá rẻ, hãy kiểm tra kỹ tình trạng, phụ kiện đi kèm và địa điểm giao dịch.",
+        "status_badge_fair": "Hợp lý", "status_title_fair": "Mức giá có vẻ hợp lý",
+        "status_copy_fair": "Giá bán không chênh lệch nhiều so với giá dự đoán. Nên kiểm tra tình trạng và phụ kiện có đúng như mô tả không.",
+        "status_badge_expensive": "Đắt", "status_title_expensive": "Giá hơi cao",
+        "status_copy_expensive": "Giá bán cao hơn giá dự đoán. Hãy so sánh với các tin đăng khác của cùng sản phẩm hoặc thử thương lượng giá.",
+        "status_badge_need_price": "Cần nhập giá", "status_title_need_price": "Nhập giá bán để được đánh giá",
+        "status_copy_need_price": "Không đọc được giá từ bài đăng. Hãy nhập giá bán để so sánh với giá dự đoán.",
+        "status_badge_unknown": "Chưa thể đánh giá", "status_title_unknown": "Hiện chưa thể đánh giá",
+        "status_copy_unknown": "Thiếu dữ liệu mô hình hoặc giá. Hãy thử nhập tên sản phẩm và giá cụ thể hơn.",
+        "link_hero_title": "Chỉ cần dán liên kết",
+        "link_hero_subtitle": "Kiểm tra ngay giá có hợp lý không, và chuẩn bị luôn tin nhắn bằng ngoại ngữ.",
+        "link_step1_title": "Dán liên kết", "link_step1_copy": "Dán nguyên địa chỉ bài đăng Karrot (당근마켓).",
+        "link_step2_title": "Kiểm tra giá bán", "link_step2_copy": "Nếu không tự nhận diện được, hãy nhập tay.",
+        "link_step3_title": "Quyết định mua", "link_step3_copy": "Xem giá dự đoán và tin nhắn giao dịch.",
+        "link_form1_heading": "Liên kết sản phẩm", "link_form1_note": "Sao chép và dán địa chỉ bài đăng trên Karrot (당근마켓).",
+        "link_form2_heading": "Loại sản phẩm", "link_form2_note": "Chọn trước phòng khi không thể đoán loại chỉ từ liên kết.",
+        "option_row_title": "Tùy chọn kiểm tra",
+        "link_checkbox_manual_price": "Nhập giá bán thủ công",
+        "price_label": "Giá bán",
+        "language_select_label": "Ngôn ngữ",
+        "link_checkbox_use_ai": "Nhận gợi ý mua hàng",
+        "link_submit": "Kiểm tra sản phẩm",
+        "link_spinner_analyzing": "Đang đọc bài đăng và phân tích giá...",
+        "manual_spinner_generating": "Đang tạo gợi ý mua hàng...",
+        "notice_need_link_title": "Vui lòng nhập liên kết sản phẩm",
+        "notice_need_link_copy": "Dán địa chỉ bài đăng Karrot để kiểm tra ngay.",
+        "notice_link_error_title": "Không đọc được liên kết",
+        "notice_link_error_copy": "Bài đăng có thể bị giới hạn truy cập hoặc địa chỉ không đúng. Hãy thử kiểm tra sản phẩm này ở mục Nhập thủ công.",
+        "section_item_info": "Thông tin sản phẩm",
+        "info_title": "Tên sản phẩm", "info_price": "Giá bán", "info_category": "Phân loại", "info_expected_price": "Giá dự đoán",
+        "expander_seller_desc": "Mô tả của người bán",
+        "section_purchase_help": "Gợi ý mua hàng",
+        "manual_hero_title": "Trước tiên hãy chọn loại sản phẩm",
+        "manual_hero_subtitle": "Chọn loại sản phẩm sẽ đổi ví dụ nhập liệu và giúp kiểm tra giá tự nhiên hơn.",
+        "manual_form1_heading": "Loại sản phẩm", "manual_form1_note": "Chọn loại gần đúng nhất, không cần chính xác tuyệt đối.",
+        "manual_form2_heading": "Thông tin sản phẩm", "manual_form2_note": "Chỉ cần tên và giá bán cũng có thể kiểm tra. Thêm mô tả sẽ giúp gợi ý mua hàng tốt hơn.",
+        "manual_title_label": "Tên sản phẩm", "manual_price_label": "Giá bán", "manual_help_language_label": "Ngôn ngữ gợi ý",
+        "manual_desc_label": "Mô tả của người bán",
+        "manual_desc_placeholder": "VD: thời gian sử dụng, phụ kiện đi kèm, lỗi (nếu có), địa điểm giao dịch...",
+        "manual_option_row_title": "Tùy chọn thêm",
+        "manual_checkbox_use_ai": "Nhận gợi ý mua hàng",
+        "manual_submit": "Kiểm tra giá",
+        "notice_need_title_title": "Vui lòng nhập tên sản phẩm",
+        "notice_need_title_copy": "VD: iPhone 13, bàn học, xe đạp — ghi rõ ràng sẽ cho kết quả chính xác hơn.",
+        "section_price_analysis": "Kết quả phân tích giá",
+        "price_disclaimer": "Giá dự đoán được tính từ dữ liệu giao dịch mà ứng dụng thu thập. Hãy luôn kiểm tra tình trạng và phụ kiện trước khi giao dịch thực tế.",
+        "dashboard_hero_title": "Xem giá đồ cũ tại Busan",
+        "dashboard_hero_subtitle": "Xem dữ liệu sản phẩm đã thu thập theo từng danh mục, hoặc tìm ngay món đồ bạn quan tâm.",
+        "dashboard_no_data": "Không tìm thấy tệp used_items_cleaned.csv.",
+        "section_overview": "Tổng quan",
+        "overview_total_items": "Sản phẩm đã đăng", "overview_avg_price": "Giá trung bình", "overview_median_price": "Giá trung vị", "overview_category_count": "Số loại sản phẩm",
+        "section_category_price": "Giá theo danh mục",
+        "category_stat_template": "{count:,} sản phẩm · TB {avg}",
+        "section_browse_items": "Tìm sản phẩm",
+        "filter_category_label": "Danh mục", "filter_keyword_label": "Từ khóa", "filter_sort_label": "Sắp xếp",
+        "sort_price_asc": "Giá thấp đến cao", "sort_price_desc": "Giá cao đến thấp", "sort_recent": "Thu thập gần đây",
+        "all_option": "Tất cả",
+        "item_count_template": "{count:,} sản phẩm",
+        "view_post_link": "Xem bài đăng",
+        "expander_full_table": "Xem toàn bộ bảng dữ liệu",
+        "col_town": "Khu vực", "col_title": "Tiêu đề", "col_price": "Giá", "col_category": "Danh mục", "col_link": "Liên kết bài đăng",
+        "translate_hero_title": "Dịch tin nhắn của bạn sang tiếng Hàn",
+        "translate_hero_subtitle": "Không cần kiểm tra giá, bạn vẫn có thể dịch tin nhắn bất cứ lúc nào và sao chép ngay.",
+        "translate_source_lang_label": "Ngôn ngữ của tôi",
+        "translate_input_label": "Tin nhắn của tôi",
+        "translate_input_placeholder": "VD: Sản phẩm này còn không ạ? Ngày mai mình gặp gần trường được không?",
+        "translate_button": "Dịch sang tiếng Hàn",
+        "translating_spinner": "Đang dịch...",
+        "translate_empty_message": "Vui lòng nhập tin nhắn cần dịch.",
+        "openai_key_missing_help": "Chưa thiết lập OpenAI API key nên không thể tạo gợi ý mua hàng.",
+        "openai_pkg_missing_help": "Chưa cài đặt gói openai nên không thể tạo gợi ý mua hàng.",
+        "openai_key_missing_translate": "Chưa thiết lập OpenAI API key nên không thể dịch.",
+        "openai_pkg_missing_translate": "Chưa cài đặt gói openai nên không thể dịch.",
+    },
+    "th": {
+        "ui_language_label": "ภาษาที่แสดง",
+        "brand_title_html": "ผู้ช่วย<br>ซื้อขายสำหรับนักศึกษาต่างชาติ",
+        "brand_copy": "ตั้งแต่เช็กราคาไปจนถึงข้อความภาษาต่างประเทศ ช่วยคุณได้ในที่เดียว",
+        "refresh_button": "↻ รีเฟรช",
+        "menu_label": "เมนู",
+        "home_help": "กลับไปหน้าแรก",
+        "status_model_ready": "โมเดลราคาพร้อมใช้งาน",
+        "status_model_missing": "ไม่พบโมเดลราคา",
+        "status_ai_key_missing": "ต้องตั้งค่าคีย์ก่อนใช้คำแนะนำการซื้อ",
+        "nav_link_analysis": "วิเคราะห์ลิงก์",
+        "nav_manual_input": "กรอกข้อมูลเอง",
+        "nav_dashboard": "แดชบอร์ดข้อมูล",
+        "nav_translate": "แปลข้อความ",
+        "app_kicker": "ผู้ช่วยซื้อขายมือสองสำหรับนักศึกษาต่างชาติ — มหาวิทยาลัยภาษาต่างประเทศปูซาน",
+        "price_check_result": "ผลการเช็กราคา",
+        "actual_price": "ราคาขาย",
+        "expected_price": "ราคาที่คาดการณ์",
+        "error_info_prefix": "ข้อมูลข้อผิดพลาด: ",
+        "status_badge_cheap": "ราคาถูก", "status_title_cheap": "มีแนวโน้มเป็นดีลที่ดี",
+        "status_copy_cheap": "ราคาขายต่ำกว่าราคาที่คาดการณ์ไว้ แต่ถ้าถูกเกินไป ควรตรวจสอบสภาพสินค้า อุปกรณ์ที่แถม และสถานที่นัดรับอีกครั้ง",
+        "status_badge_fair": "เหมาะสม", "status_title_fair": "ราคาดูเหมาะสมดี",
+        "status_copy_fair": "ราคาขายไม่ต่างจากราคาที่คาดการณ์มากนัก ควรตรวจสอบสภาพสินค้าและอุปกรณ์ให้ตรงกับคำอธิบาย",
+        "status_badge_expensive": "ราคาสูง", "status_title_expensive": "ราคาค่อนข้างสูง",
+        "status_copy_expensive": "ราคาขายสูงกว่าราคาที่คาดการณ์ ลองเปรียบเทียบกับประกาศอื่นของสินค้าเดียวกัน หรือขอให้ผู้ขายลดราคา",
+        "status_badge_need_price": "ต้องกรอกราคา", "status_title_need_price": "กรอกราคาขายเพื่อให้ประเมินได้",
+        "status_copy_need_price": "ไม่สามารถอ่านราคาจากประกาศได้ กรอกราคาขายเองเพื่อเปรียบเทียบกับราคาที่คาดการณ์",
+        "status_badge_unknown": "ยังประเมินไม่ได้", "status_title_unknown": "ตอนนี้ยังประเมินได้ยาก",
+        "status_copy_unknown": "ข้อมูลโมเดลหรือราคายังไม่เพียงพอ ลองกรอกชื่อสินค้าและราคาให้ชัดเจนขึ้น",
+        "link_hero_title": "แค่วางลิงก์ก็เสร็จ",
+        "link_hero_subtitle": "เช็กได้ทันทีว่าราคาขายเหมาะสมไหม พร้อมเตรียมข้อความภาษาต่างประเทศไว้ในที่เดียว",
+        "link_step1_title": "วางลิงก์", "link_step1_copy": "วางที่อยู่ประกาศ Karrot (당근마켓) ได้เลย",
+        "link_step2_title": "เช็กราคาขาย", "link_step2_copy": "ถ้าระบบตรวจจับไม่ได้ ให้กรอกเอง",
+        "link_step3_title": "ตัดสินใจซื้อ", "link_step3_copy": "ดูราคาที่คาดการณ์และข้อความสำหรับติดต่อ",
+        "link_form1_heading": "ลิงก์สินค้า", "link_form1_note": "คัดลอกและวางที่อยู่ประกาศจาก Karrot (당근마켓)",
+        "link_form2_heading": "ประเภทสินค้า", "link_form2_note": "เลือกไว้ก่อนเผื่อกรณีที่ดูประเภทจากลิงก์อย่างเดียวไม่ได้",
+        "option_row_title": "ตัวเลือกการเช็ก",
+        "link_checkbox_manual_price": "กรอกราคาขายเอง",
+        "price_label": "ราคาขาย",
+        "language_select_label": "ภาษา",
+        "link_checkbox_use_ai": "รับคำแนะนำ",
+        "link_submit": "เช็กสินค้านี้",
+        "link_spinner_analyzing": "กำลังอ่านประกาศและวิเคราะห์ราคา...",
+        "manual_spinner_generating": "กำลังสร้างคำแนะนำการซื้อ...",
+        "notice_need_link_title": "กรุณากรอกลิงก์สินค้า",
+        "notice_need_link_copy": "วางที่อยู่ประกาศ Karrot เพื่อเช็กได้ทันที",
+        "notice_link_error_title": "ไม่สามารถอ่านลิงก์นี้ได้",
+        "notice_link_error_copy": "ประกาศอาจถูกจำกัดการเข้าถึง หรือที่อยู่ไม่ถูกต้อง ลองเช็กสินค้าเดียวกันในเมนู กรอกข้อมูลเอง แทน",
+        "section_item_info": "ข้อมูลสินค้า",
+        "info_title": "ชื่อสินค้า", "info_price": "ราคาขาย", "info_category": "หมวดหมู่", "info_expected_price": "ราคาที่คาดการณ์",
+        "expander_seller_desc": "คำอธิบายจากผู้ขาย",
+        "section_purchase_help": "คำแนะนำการซื้อ",
+        "manual_hero_title": "เลือกประเภทสินค้าก่อน",
+        "manual_hero_subtitle": "การเลือกประเภทสินค้าจะเปลี่ยนตัวอย่างการกรอก และช่วยให้เช็กราคาได้แม่นยำขึ้น",
+        "manual_form1_heading": "ประเภทสินค้า", "manual_form1_note": "เลือกประเภทที่ใกล้เคียงที่สุดก่อน ไม่จำเป็นต้องตรงเป๊ะ",
+        "manual_form2_heading": "ข้อมูลสินค้า", "manual_form2_note": "แค่ชื่อสินค้าและราคาก็เช็กได้ ถ้าใส่คำอธิบายด้วยจะได้คำแนะนำการซื้อที่ดีขึ้น",
+        "manual_title_label": "ชื่อสินค้า", "manual_price_label": "ราคาขาย", "manual_help_language_label": "ภาษาของคำแนะนำ",
+        "manual_desc_label": "คำอธิบายจากผู้ขาย",
+        "manual_desc_placeholder": "เช่น ระยะเวลาที่ใช้งาน อุปกรณ์ที่แถม ตำหนิ (ถ้ามี) สถานที่นัดรับ ฯลฯ",
+        "manual_option_row_title": "ตัวเลือกเพิ่มเติม",
+        "manual_checkbox_use_ai": "รับคำแนะนำการซื้อ",
+        "manual_submit": "เช็กราคา",
+        "notice_need_title_title": "กรุณากรอกชื่อสินค้า",
+        "notice_need_title_copy": "เช่น iPhone 13, โต๊ะ, จักรยาน — เขียนให้ชัดเจนจะได้ผลลัพธ์ที่แม่นยำขึ้น",
+        "section_price_analysis": "ผลการวิเคราะห์ราคา",
+        "price_disclaimer": "ราคาที่คาดการณ์คำนวณจากข้อมูลการซื้อขายที่แอปเก็บรวบรวมไว้ ก่อนซื้อขายจริงควรตรวจสอบสภาพสินค้าและอุปกรณ์ที่แถมด้วย",
+        "dashboard_hero_title": "ดูราคาสินค้ามือสองในปูซาน",
+        "dashboard_hero_subtitle": "ดูข้อมูลสินค้าที่เก็บรวบรวมแยกตามหมวดหมู่ หรือค้นหาสินค้าที่สนใจได้ทันที",
+        "dashboard_no_data": "ไม่พบไฟล์ used_items_cleaned.csv",
+        "section_overview": "ภาพรวม",
+        "overview_total_items": "สินค้าที่ลงทะเบียน", "overview_avg_price": "ราคาเฉลี่ย", "overview_median_price": "ราคามัธยฐาน", "overview_category_count": "จำนวนประเภทสินค้า",
+        "section_category_price": "ราคาตามหมวดหมู่",
+        "category_stat_template": "{count:,} รายการ · เฉลี่ย {avg}",
+        "section_browse_items": "ค้นหาสินค้า",
+        "filter_category_label": "หมวดหมู่", "filter_keyword_label": "คำค้นหา", "filter_sort_label": "การจัดเรียง",
+        "sort_price_asc": "ราคาต่ำไปสูง", "sort_price_desc": "ราคาสูงไปต่ำ", "sort_recent": "เก็บข้อมูลล่าสุด",
+        "all_option": "ทั้งหมด",
+        "item_count_template": "{count:,} รายการ",
+        "view_post_link": "ดูประกาศ",
+        "expander_full_table": "ดูข้อมูลทั้งหมดแบบตาราง",
+        "col_town": "พื้นที่ที่เก็บข้อมูล", "col_title": "ชื่อเรื่อง", "col_price": "ราคา", "col_category": "หมวดหมู่", "col_link": "ลิงก์ประกาศ",
+        "translate_hero_title": "แปลงข้อความที่จะส่งให้ผู้ขายเป็นภาษาเกาหลี",
+        "translate_hero_subtitle": "ไม่ต้องเช็กราคาก่อนก็แปลข้อความได้ทุกเมื่อ แล้วคัดลอกไปใช้ได้เลย",
+        "translate_source_lang_label": "ภาษาของฉัน",
+        "translate_input_label": "ข้อความที่ฉันเขียน",
+        "translate_input_placeholder": "เช่น สินค้ายังอยู่ไหมคะ/ครับ พรุ่งนี้นัดรับใกล้โรงเรียนได้ไหม?",
+        "translate_button": "แปลเป็นภาษาเกาหลี",
+        "translating_spinner": "กำลังแปล...",
+        "translate_empty_message": "กรุณากรอกข้อความที่ต้องการแปล",
+        "openai_key_missing_help": "ไม่ได้ตั้งค่า OpenAI API Key จึงสร้างคำแนะนำการซื้อไม่ได้",
+        "openai_pkg_missing_help": "ไม่ได้ติดตั้งแพ็กเกจ openai จึงสร้างคำแนะนำการซื้อไม่ได้",
+        "openai_key_missing_translate": "ไม่ได้ตั้งค่า OpenAI API Key จึงแปลไม่ได้",
+        "openai_pkg_missing_translate": "ไม่ได้ติดตั้งแพ็กเกจ openai จึงแปลไม่ได้",
+    },
+}
+
+
 def inject_theme_style():
     st.markdown(
         """
@@ -736,7 +1338,8 @@ def inject_theme_style():
     )
 
 
-def render_hero(title, subtitle, kicker="부산외국어대학교 유학생 중고거래 도우미"):
+def render_hero(title, subtitle, kicker=None):
+    kicker = kicker if kicker is not None else t("app_kicker")
     st.markdown(
         f"""
         <div class="app-hero">
@@ -762,33 +1365,13 @@ def render_info_card(label, value):
 
 
 def get_price_feedback(status):
-    messages = {
-        "저렴": (
-            "좋은 거래일 가능성이 높아요",
-            "판매가가 예상 시세보다 낮은 편입니다. 다만 너무 저렴한 상품은 상태, 구성품, 직거래 장소를 한 번 더 확인하세요.",
-        ),
-        "적정": (
-            "무난한 가격대로 보여요",
-            "판매가가 예상 시세와 크게 차이 나지 않습니다. 상품 상태와 구성품이 설명과 맞는지 확인하면 좋아요.",
-        ),
-        "비쌈": (
-            "가격이 높은 편이에요",
-            "판매가가 예상 시세보다 높게 나왔습니다. 같은 상품의 다른 매물과 비교하거나 가격 조정을 요청해보세요.",
-        ),
-        "가격 입력 필요": (
-            "판매가를 입력하면 판단할 수 있어요",
-            "게시글에서 가격을 읽지 못했습니다. 판매가를 직접 입력하면 예상 시세와 비교해드릴게요.",
-        ),
-        "판단 불가": (
-            "지금은 판단하기 어려워요",
-            "모델이나 가격 정보가 부족합니다. 상품명과 가격을 더 구체적으로 입력해보세요.",
-        ),
-    }
-    return messages.get(status, messages["판단 불가"])
+    slug = STATUS_KEY_MAP.get(status, "unknown")
+    return t(f"status_title_{slug}"), t(f"status_copy_{slug}")
 
 
 def render_price_summary(price_result):
     status = price_result.get("가격판단", "판단 불가")
+    slug = STATUS_KEY_MAP.get(status, "unknown")
     title, copy = get_price_feedback(status)
     color = {
         "저렴": "#17a673",
@@ -800,17 +1383,17 @@ def render_price_summary(price_result):
     st.markdown(
         f"""
         <div class="result-summary">
-            <div class="result-kicker">가격 체크 결과</div>
-            <div class="result-badge" style="background:{color};">{escape(str(status))}</div>
+            <div class="result-kicker">{escape(t("price_check_result"))}</div>
+            <div class="result-badge" style="background:{color};">{escape(t(f"status_badge_{slug}"))}</div>
             <div class="result-title">{escape(title)}</div>
             <div class="result-copy">{escape(copy)}</div>
             <div class="result-numbers">
                 <div class="result-number">
-                    <div class="result-number-label">판매가</div>
+                    <div class="result-number-label">{escape(t("actual_price"))}</div>
                     <div class="result-number-value">{escape(format_won(price_result.get("실제가격")))}</div>
                 </div>
                 <div class="result-number">
-                    <div class="result-number-label">예상 시세</div>
+                    <div class="result-number-label">{escape(t("expected_price"))}</div>
                     <div class="result-number-value">{escape(format_won(price_result.get("예측적정가격")))}</div>
                 </div>
             </div>
@@ -834,10 +1417,43 @@ def render_notice(title, copy):
 
 def reset_inputs():
     st.session_state["reset_version"] = st.session_state.get("reset_version", 0) + 1
+    for key in ("analysis_result", "manual_result", "translate_page_result"):
+        st.session_state.pop(key, None)
 
 
 def widget_key(name):
     return f"{name}_{st.session_state.get('reset_version', 0)}"
+
+
+def current_lang_code():
+    return LANG_CODE_MAP.get(st.session_state.get("ui_lang", "한국어"), "ko")
+
+
+def t(key):
+    code = current_lang_code()
+    value = TRANSLATIONS.get(code, {}).get(key)
+    if value is not None:
+        return value
+    return TRANSLATIONS["ko"].get(key, key)
+
+
+def category_label(category):
+    code = current_lang_code()
+    value = CATEGORY_LABELS_I18N.get(code, {}).get(category)
+    if value is not None:
+        return value
+    return CATEGORY_LABELS_I18N["ko"].get(category, category)
+
+
+def init_ui_lang():
+    if "ui_lang" not in st.session_state:
+        lang_code = st.query_params.get("lang", "ko")
+        st.session_state["ui_lang"] = CODE_TO_LANG_LABEL.get(lang_code, "한국어")
+
+
+def render_language_selector():
+    st.sidebar.selectbox(t("ui_language_label"), list(LANGUAGE_OPTIONS.keys()), key="ui_lang")
+    st.query_params["lang"] = LANG_CODE_MAP[st.session_state["ui_lang"]]
 
 
 def get_secret(name: str, default: str = "") -> str:
@@ -1131,12 +1747,12 @@ def build_prompt(item_info, price_result, language):
 def generate_multilingual_result(item_info, price_result, language):
     api_key = get_secret("OPENAI_API_KEY")
     if not api_key:
-        return "OpenAI API Key가 없어 구매 도움말을 만들지 못했습니다."
+        return t("openai_key_missing_help")
 
     try:
         from openai import OpenAI
     except Exception:
-        return "openai 패키지가 설치되어 있지 않아 구매 도움말을 만들지 못했습니다."
+        return t("openai_pkg_missing_help")
 
     client = OpenAI(api_key=api_key)
     response = client.chat.completions.create(
@@ -1145,6 +1761,48 @@ def generate_multilingual_result(item_info, price_result, language):
         messages=[
             {"role": "system", "content": "You are a helpful assistant for international students buying used goods in Korea."},
             {"role": "user", "content": build_prompt(item_info, price_result, language)},
+        ],
+    )
+    return response.choices[0].message.content
+
+
+def build_translate_prompt(text, source_language):
+    return f"""
+너는 부산외국어대학교 유학생을 위한 중고거래 번역 도우미야.
+아래 메시지는 유학생이 당근마켓 판매자에게 보내고 싶어서 {source_language}로 작성한 문장이야.
+이 메시지를 자연스러운 한국어 존댓말 채팅 문장으로 번역해줘.
+
+[원문 - {source_language}]
+{text}
+
+번역할 때 지킬 것:
+- 실제 채팅에 그대로 복사해서 보낼 수 있는 자연스러운 한국어 문장으로 번역해.
+- 너무 딱딱한 번역투가 아니라 실제 사람이 쓰는 채팅처럼 자연스럽게 써.
+- 원문에 없는 내용을 추가하거나 설명을 덧붙이지 마.
+- 번역된 한국어 문장만 출력하고 다른 말은 하지 마.
+""".strip()
+
+
+def translate_message_to_korean(text, source_language):
+    if not text or not text.strip():
+        return t("translate_empty_message")
+
+    api_key = get_secret("OPENAI_API_KEY")
+    if not api_key:
+        return t("openai_key_missing_translate")
+
+    try:
+        from openai import OpenAI
+    except Exception:
+        return t("openai_pkg_missing_translate")
+
+    client = OpenAI(api_key=api_key)
+    response = client.chat.completions.create(
+        model=get_secret("OPENAI_MODEL", "gpt-4o-mini"),
+        temperature=0.3,
+        messages=[
+            {"role": "system", "content": "You translate chat messages from international students into natural, polite Korean for secondhand marketplace sellers."},
+            {"role": "user", "content": build_translate_prompt(text.strip(), source_language)},
         ],
     )
     return response.choices[0].message.content
@@ -1181,29 +1839,55 @@ def render_status_badge(status):
     )
 
 
-def render_analysis_page():
-    render_hero(
-        "링크만 붙여넣으면 끝",
-        "판매가가 괜찮은지 바로 확인하고, 외국어로 보낼 메시지까지 한 번에 준비하세요.",
+def render_translate_page():
+    render_hero(t("translate_hero_title"), t("translate_hero_subtitle"))
+
+    labels = list(LANGUAGE_OPTIONS.keys())
+    default_label = st.session_state.get("ui_lang", "한국어")
+    default_index = labels.index(default_label) if default_label in labels else labels.index("한국어")
+    source_label = st.selectbox(
+        t("translate_source_lang_label"),
+        labels,
+        index=default_index,
+        key=widget_key("translate_source_lang"),
     )
 
+    user_message = st.text_area(
+        t("translate_input_label"),
+        placeholder=t("translate_input_placeholder"),
+        key=widget_key("translate_page_input"),
+    )
+
+    if st.button(t("translate_button"), type="primary", key=widget_key("translate_page_btn")):
+        with st.spinner(t("translating_spinner")):
+            translated = translate_message_to_korean(user_message, LANGUAGE_OPTIONS[source_label])
+        st.session_state["translate_page_result"] = translated
+
+    translated_message = st.session_state.get("translate_page_result")
+    if translated_message:
+        st.code(translated_message, language=None)
+
+
+def render_analysis_page():
+    render_hero(t("link_hero_title"), t("link_hero_subtitle"))
+
     st.markdown(
-        """
+        f"""
         <div class="step-strip">
             <div class="step-card">
                 <div class="step-num">1</div>
-                <div class="step-title">링크 붙여넣기</div>
-                <div class="step-copy">당근 게시글 주소를 그대로 넣어요.</div>
+                <div class="step-title">{escape(t("link_step1_title"))}</div>
+                <div class="step-copy">{escape(t("link_step1_copy"))}</div>
             </div>
             <div class="step-card">
                 <div class="step-num">2</div>
-                <div class="step-title">판매가 확인</div>
-                <div class="step-copy">자동 인식이 안 되면 직접 입력해요.</div>
+                <div class="step-title">{escape(t("link_step2_title"))}</div>
+                <div class="step-copy">{escape(t("link_step2_copy"))}</div>
             </div>
             <div class="step-card">
                 <div class="step-num">3</div>
-                <div class="step-title">구매 판단</div>
-                <div class="step-copy">예상 시세와 거래 메시지를 확인해요.</div>
+                <div class="step-title">{escape(t("link_step3_title"))}</div>
+                <div class="step-copy">{escape(t("link_step3_copy"))}</div>
             </div>
         </div>
         """,
@@ -1212,120 +1896,119 @@ def render_analysis_page():
 
     with st.form("analysis_form"):
         st.markdown(
-            """
-            <div class="form-heading"><span>1</span>상품 링크</div>
-            <div class="form-note">당근마켓 게시글 주소를 복사해서 붙여넣으세요.</div>
+            f"""
+            <div class="form-heading"><span>1</span>{escape(t("link_form1_heading"))}</div>
+            <div class="form-note">{escape(t("link_form1_note"))}</div>
             """,
             unsafe_allow_html=True,
         )
         url = st.text_input(
-            "상품 링크",
+            t("link_form1_heading"),
             placeholder="https://www.daangn.com/kr/buy-sell/...",
             label_visibility="collapsed",
             key=widget_key("link_url"),
         )
 
         st.markdown(
-            """
-            <div class="form-heading"><span>2</span>상품 종류</div>
-            <div class="form-note">링크만으로 종류를 알기 어려울 때를 위해 먼저 골라주세요.</div>
+            f"""
+            <div class="form-heading"><span>2</span>{escape(t("link_form2_heading"))}</div>
+            <div class="form-note">{escape(t("link_form2_note"))}</div>
             """,
             unsafe_allow_html=True,
         )
         selected_category = st.pills(
-            "상품 종류",
+            t("link_form2_heading"),
             CATEGORY_OPTIONS,
             default="전자기기",
-            format_func=lambda value: CATEGORY_LABELS[value],
+            format_func=lambda value: category_label(value),
             key=widget_key("link_category"),
             label_visibility="collapsed",
             width="stretch",
         )
         selected_category = selected_category or "기타"
 
-        st.markdown('<div class="option-row-title">확인 옵션</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="option-row-title">{escape(t("option_row_title"))}</div>', unsafe_allow_html=True)
         col1, col2, col3, col4 = st.columns([1.15, 1.2, 1.2, 1.15])
         with col1:
-            use_manual_price = st.checkbox("판매가 직접 입력", value=True, key=widget_key("link_manual_price_enabled"))
+            use_manual_price = st.checkbox(t("link_checkbox_manual_price"), value=True, key=widget_key("link_manual_price_enabled"))
         with col2:
-            manual_price = st.number_input("판매가", min_value=0, step=1000, value=0, disabled=not use_manual_price, key=widget_key("link_manual_price"))
+            manual_price = st.number_input(t("price_label"), min_value=0, step=1000, value=0, disabled=not use_manual_price, key=widget_key("link_manual_price"))
         with col3:
-            language_label = st.selectbox("언어", list(LANGUAGE_OPTIONS.keys()), key=widget_key("link_language"))
+            language_label = st.selectbox(t("language_select_label"), list(LANGUAGE_OPTIONS.keys()), key=widget_key("link_language"))
         with col4:
-            use_ai = st.checkbox("도움말 받기", value=True, key=widget_key("link_use_ai"))
+            use_ai = st.checkbox(t("link_checkbox_use_ai"), value=True, key=widget_key("link_use_ai"))
 
-        submitted = st.form_submit_button("상품 확인하기", type="primary", use_container_width=True)
+        submitted = st.form_submit_button(t("link_submit"), type="primary", use_container_width=True)
 
-    if not submitted:
+    if submitted:
+        if not url.strip():
+            render_notice(t("notice_need_link_title"), t("notice_need_link_copy"))
+            st.session_state.pop("analysis_result", None)
+        else:
+            selected_price = int(manual_price) if use_manual_price else None
+            with st.spinner(t("link_spinner_analyzing")):
+                try:
+                    result = analyze_used_item_link(
+                        url=url.strip(),
+                        language=LANGUAGE_OPTIONS[language_label],
+                        manual_price=selected_price,
+                        use_ai=use_ai,
+                        category=selected_category,
+                    )
+                except Exception as exc:
+                    render_notice(t("notice_link_error_title"), t("notice_link_error_copy"))
+                    st.caption(f"{t('error_info_prefix')}{exc}")
+                    st.session_state.pop("analysis_result", None)
+                    result = None
+
+            if result is not None:
+                st.session_state["analysis_result"] = result
+
+    result = st.session_state.get("analysis_result")
+    if not result:
         return
-
-    if not url.strip():
-        render_notice("상품 링크를 넣어주세요", "당근마켓 게시글 주소를 복사해서 붙여넣으면 바로 확인할 수 있어요.")
-        return
-
-    selected_price = int(manual_price) if use_manual_price else None
-    with st.spinner("게시글을 읽고 가격을 분석하는 중입니다..."):
-        try:
-            result = analyze_used_item_link(
-                url=url.strip(),
-                language=LANGUAGE_OPTIONS[language_label],
-                manual_price=selected_price,
-                use_ai=use_ai,
-                category=selected_category,
-            )
-        except Exception as exc:
-            render_notice(
-                "링크를 읽지 못했어요",
-                "게시글 접근이 제한되었거나 주소가 올바르지 않을 수 있어요. 같은 상품을 직접 입력 메뉴에서 확인해보세요.",
-            )
-            st.caption(f"오류 정보: {exc}")
-            return
 
     item_info = result["상품정보"]
     price_result = result["가격판단결과"]
 
     render_price_summary(price_result)
 
-    st.markdown('<div class="section-title">상품 정보</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{escape(t("section_item_info"))}</div>', unsafe_allow_html=True)
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        render_info_card("상품명", item_info["제목"])
+        render_info_card(t("info_title"), item_info["제목"])
     with c2:
-        render_info_card("판매가", item_info["가격"])
+        render_info_card(t("info_price"), item_info["가격"])
     with c3:
-        render_info_card("분류", price_result["카테고리"])
+        render_info_card(t("info_category"), category_label(price_result["카테고리"]))
     with c4:
-        render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
+        render_info_card(t("info_expected_price"), format_won(price_result["예측적정가격"]))
 
-    with st.expander("판매자 설명", expanded=True):
+    with st.expander(t("expander_seller_desc"), expanded=True):
         st.write(item_info["상세설명"])
 
     if result["AI설명"]:
-        st.markdown('<div class="section-title">구매 도움말</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="section-title">{escape(t("section_purchase_help"))}</div>', unsafe_allow_html=True)
         with st.container(border=True):
             st.markdown(result["AI설명"])
 
 
 def render_manual_page():
-    render_hero(
-        "무슨 물건인지 먼저 골라주세요",
-        "상품 종류를 고르면 입력 예시가 바뀌고, 더 자연스럽게 가격을 확인할 수 있어요.",
-        kicker="중고거래 시세 확인",
-    )
+    render_hero(t("manual_hero_title"), t("manual_hero_subtitle"))
 
     with st.form("manual_form"):
         st.markdown(
-            """
-            <div class="form-heading"><span>1</span>상품 종류</div>
-            <div class="form-note">가장 가까운 종류를 먼저 선택하세요. 정확히 몰라도 괜찮아요.</div>
+            f"""
+            <div class="form-heading"><span>1</span>{escape(t("manual_form1_heading"))}</div>
+            <div class="form-note">{escape(t("manual_form1_note"))}</div>
             """,
             unsafe_allow_html=True,
         )
         selected_category = st.pills(
-            "상품 종류",
+            t("manual_form1_heading"),
             CATEGORY_OPTIONS,
             default="전자기기",
-            format_func=lambda value: CATEGORY_LABELS[value],
+            format_func=lambda value: category_label(value),
             key=widget_key("manual_category"),
             label_visibility="collapsed",
             width="stretch",
@@ -1340,102 +2023,116 @@ def render_manual_page():
         )
 
         st.markdown(
-            """
-            <div class="form-heading"><span>2</span>상품 정보</div>
-            <div class="form-note">제목과 판매가만 넣어도 확인할 수 있어요. 설명을 넣으면 구매 도움말이 더 좋아집니다.</div>
+            f"""
+            <div class="form-heading"><span>2</span>{escape(t("manual_form2_heading"))}</div>
+            <div class="form-note">{escape(t("manual_form2_note"))}</div>
             """,
             unsafe_allow_html=True,
         )
         title = st.text_input(
-            "상품명",
+            t("manual_title_label"),
             placeholder=CATEGORY_PLACEHOLDERS.get(selected_category, CATEGORY_PLACEHOLDERS["기타"]),
             key=widget_key("manual_title"),
         )
         col1, col2 = st.columns([1, 1])
         with col1:
-            price = st.number_input("판매가", min_value=0, step=1000, value=10000, key=widget_key("manual_price"))
+            price = st.number_input(t("manual_price_label"), min_value=0, step=1000, value=10000, key=widget_key("manual_price"))
         with col2:
-            language_label = st.selectbox("도움말 언어", list(LANGUAGE_OPTIONS.keys()), key=widget_key("manual_language"))
+            language_label = st.selectbox(t("manual_help_language_label"), list(LANGUAGE_OPTIONS.keys()), key=widget_key("manual_language"))
         description = st.text_area(
-            "판매자 설명",
-            placeholder="예: 사용 기간, 구성품, 하자 여부, 직거래 위치 등을 적어주세요.",
+            t("manual_desc_label"),
+            placeholder=t("manual_desc_placeholder"),
             key=widget_key("manual_description"),
         )
 
-        st.markdown('<div class="option-row-title">추가 옵션</div>', unsafe_allow_html=True)
-        use_ai = st.checkbox("구매 도움말 받기", value=True, key=widget_key("manual_ai"))
-        submitted = st.form_submit_button("가격 확인하기", type="primary", use_container_width=True)
+        st.markdown(f'<div class="option-row-title">{escape(t("manual_option_row_title"))}</div>', unsafe_allow_html=True)
+        use_ai = st.checkbox(t("manual_checkbox_use_ai"), value=True, key=widget_key("manual_ai"))
+        submitted = st.form_submit_button(t("manual_submit"), type="primary", use_container_width=True)
 
-    if not submitted:
+    if submitted:
+        if not title.strip():
+            render_notice(t("notice_need_title_title"), t("notice_need_title_copy"))
+            st.session_state.pop("manual_result", None)
+        else:
+            item_info = {
+                "제목": title.strip(),
+                "카테고리": selected_category,
+                "가격": format_won(price),
+                "가격_numeric": int(price),
+                "상세설명": description.strip() or "상세설명 없음",
+                "링크": "",
+            }
+            price_result = predict_price_from_item(item_info, manual_price=int(price))
+
+            ai_text = None
+            if use_ai:
+                with st.spinner(t("manual_spinner_generating")):
+                    ai_text = generate_multilingual_result(item_info, price_result, LANGUAGE_OPTIONS[language_label])
+
+            st.session_state["manual_result"] = {
+                "상품정보": item_info,
+                "가격판단결과": price_result,
+                "AI설명": ai_text,
+            }
+
+    result = st.session_state.get("manual_result")
+    if not result:
         return
 
-    if not title.strip():
-        render_notice("상품명을 입력해주세요", "예: 아이폰 13, 책상, 자전거처럼 상품을 알아볼 수 있게 적으면 더 정확해져요.")
-        return
-
-    item_info = {
-        "제목": title.strip(),
-        "카테고리": selected_category,
-        "가격": format_won(price),
-        "가격_numeric": int(price),
-        "상세설명": description.strip() or "상세설명 없음",
-        "링크": "",
-    }
-    price_result = predict_price_from_item(item_info, manual_price=int(price))
+    item_info = result["상품정보"]
+    price_result = result["가격판단결과"]
 
     render_price_summary(price_result)
 
-    st.markdown('<div class="section-title">가격 분석 결과</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{escape(t("section_price_analysis"))}</div>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns(3)
     with col1:
-        render_info_card("분류", price_result["카테고리"])
+        render_info_card(t("info_category"), category_label(price_result["카테고리"]))
     with col2:
-        render_info_card("판매가", format_won(price_result["실제가격"]))
+        render_info_card(t("info_price"), format_won(price_result["실제가격"]))
     with col3:
-        render_info_card("예상 시세", format_won(price_result["예측적정가격"]))
+        render_info_card(t("info_expected_price"), format_won(price_result["예측적정가격"]))
 
     st.markdown(
-        """
+        f"""
         <div class="small-muted">
-        예상 시세는 앱이 가진 거래 데이터로 계산한 값입니다. 실제 거래 전에는 상품 상태와 구성품을 함께 확인하세요.
+        {escape(t("price_disclaimer"))}
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    if use_ai:
-        with st.spinner("구매 도움말을 만드는 중입니다..."):
-            st.markdown('<div class="section-title">구매 도움말</div>', unsafe_allow_html=True)
-            ai_text = generate_multilingual_result(item_info, price_result, LANGUAGE_OPTIONS[language_label])
-            with st.container(border=True):
-                st.markdown(ai_text)
+    if result["AI설명"]:
+        st.markdown(f'<div class="section-title">{escape(t("section_purchase_help"))}</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            st.markdown(result["AI설명"])
 
 
 def render_dashboard_page():
     render_hero(
-        "부산 중고거래 시세 보기",
-        "수집한 상품 데이터를 카테고리별로 훑어보고, 궁금한 물건을 바로 검색해보세요.",
-        kicker="거래 데이터 둘러보기",
+        t("dashboard_hero_title"),
+        t("dashboard_hero_subtitle"),
+        kicker=t("nav_dashboard"),
     )
     df = load_data()
     if df.empty:
-        st.warning("used_items_cleaned.csv 파일을 찾을 수 없습니다.")
+        st.warning(t("dashboard_no_data"))
         return
 
     df = df.copy()
     df["가격_numeric"] = pd.to_numeric(df["가격_numeric"], errors="coerce")
     df = df.dropna(subset=["가격_numeric"])
 
-    st.markdown('<div class="section-title">한눈에 보기</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{escape(t("section_overview"))}</div>', unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        render_info_card("등록 상품", f"{len(df):,}개")
+        render_info_card(t("overview_total_items"), t("item_count_template").format(count=len(df)))
     with col2:
-        render_info_card("평균 시세", format_won(df["가격_numeric"].mean()))
+        render_info_card(t("overview_avg_price"), format_won(df["가격_numeric"].mean()))
     with col3:
-        render_info_card("중간 가격", format_won(df["가격_numeric"].median()))
+        render_info_card(t("overview_median_price"), format_won(df["가격_numeric"].median()))
     with col4:
-        render_info_card("상품 종류", f"{df['카테고리'].nunique()}개")
+        render_info_card(t("overview_category_count"), t("item_count_template").format(count=df["카테고리"].nunique()))
 
     category_summary = (
         df.groupby("카테고리", as_index=False)
@@ -1443,29 +2140,41 @@ def render_dashboard_page():
         .sort_values("상품수", ascending=False)
     )
 
-    st.markdown('<div class="section-title">카테고리별 시세</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{escape(t("section_category_price"))}</div>', unsafe_allow_html=True)
     category_cols = st.columns(3)
     for index, row in category_summary.head(6).reset_index(drop=True).iterrows():
         with category_cols[index % 3]:
             st.markdown(
                 f"""
                 <div class="category-stat">
-                    <div class="category-name">{escape(str(row['카테고리']))}</div>
+                    <div class="category-name">{escape(category_label(row['카테고리']))}</div>
                     <div class="category-price">{escape(format_won(row['중앙값']))}</div>
-                    <div class="category-count">{int(row['상품수']):,}개 상품 · 평균 {escape(format_won(row['평균가격']))}</div>
+                    <div class="category-count">{escape(t("category_stat_template").format(count=int(row['상품수']), avg=format_won(row['평균가격'])))}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-    st.markdown('<div class="section-title">상품 찾아보기</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-title">{escape(t("section_browse_items"))}</div>', unsafe_allow_html=True)
     filter_col1, filter_col2, filter_col3 = st.columns([1.2, 2, 1.2])
     with filter_col1:
-        selected_category = st.selectbox("카테고리", ["전체"] + category_summary["카테고리"].tolist(), key=widget_key("dashboard_category"))
+        selected_category = st.selectbox(
+            t("filter_category_label"),
+            ["전체"] + category_summary["카테고리"].tolist(),
+            format_func=lambda value: t("all_option") if value == "전체" else category_label(value),
+            key=widget_key("dashboard_category"),
+        )
     with filter_col2:
-        keyword = st.text_input("검색어", placeholder="아이폰, 책상, 자전거...", key=widget_key("dashboard_keyword"))
+        keyword = st.text_input(t("filter_keyword_label"), placeholder="아이폰, 책상, 자전거...", key=widget_key("dashboard_keyword"))
     with filter_col3:
-        sort_label = st.selectbox("정렬", ["낮은 가격순", "높은 가격순", "최근 수집순"], key=widget_key("dashboard_sort"))
+        sort_options = ["낮은 가격순", "높은 가격순", "최근 수집순"]
+        sort_label_map = {"낮은 가격순": t("sort_price_asc"), "높은 가격순": t("sort_price_desc"), "최근 수집순": t("sort_recent")}
+        sort_label = st.selectbox(
+            t("filter_sort_label"),
+            sort_options,
+            format_func=lambda value: sort_label_map[value],
+            key=widget_key("dashboard_sort"),
+        )
 
     filtered = df.copy()
     if selected_category != "전체":
@@ -1480,14 +2189,14 @@ def render_dashboard_page():
     else:
         sorted_items = filtered.sort_index(ascending=False)
 
-    st.caption(f"{len(filtered):,}개 상품")
+    st.caption(t("item_count_template").format(count=len(filtered)))
     for _, row in sorted_items.head(12).iterrows():
         title = escape(str(row.get("제목", "")))
-        category = escape(str(row.get("카테고리", "")))
+        category = escape(category_label(row.get("카테고리", "")))
         town = escape(str(row.get("수집동네", "")))
         price = escape(str(row.get("가격", format_won(row.get("가격_numeric")))))
         link = escape(str(row.get("게시글링크", "")))
-        link_html = f' · <a href="{link}" target="_blank">게시글 보기</a>' if link.startswith("http") else ""
+        link_html = f' · <a href="{link}" target="_blank">{escape(t("view_post_link"))}</a>' if link.startswith("http") else ""
         st.markdown(
             f"""
             <div class="item-row">
@@ -1500,45 +2209,55 @@ def render_dashboard_page():
             unsafe_allow_html=True,
         )
 
-    with st.expander("전체 데이터 표로 보기"):
-        st.dataframe(
-            filtered[["수집동네", "제목", "가격", "카테고리", "게시글링크"]].head(200),
-            use_container_width=True,
+    with st.expander(t("expander_full_table")):
+        display_df = filtered[["수집동네", "제목", "가격", "카테고리", "게시글링크"]].head(200).rename(
+            columns={
+                "수집동네": t("col_town"),
+                "제목": t("col_title"),
+                "가격": t("col_price"),
+                "카테고리": t("col_category"),
+                "게시글링크": t("col_link"),
+            }
         )
+        st.dataframe(display_df, use_container_width=True)
 
 
 def main():
     load_dotenv_if_exists()
     inject_theme_style()
+    init_ui_lang()
 
     if "nav_page" not in st.session_state:
         st.session_state["nav_page"] = "링크 분석"
     if "reset_version" not in st.session_state:
         st.session_state["reset_version"] = 0
 
-    if st.sidebar.button("🥕", help="첫 화면으로 돌아가기", key="home_logo", use_container_width=False):
+    if st.sidebar.button("🥕", help=t("home_help"), key="home_logo", use_container_width=False):
         reset_inputs()
         st.session_state["nav_page"] = "링크 분석"
         st.rerun()
 
     st.sidebar.markdown(
-        """
+        f"""
         <div class="sidebar-brand">
-            <div class="sidebar-title">유학생<br>거래 도우미</div>
-            <div class="sidebar-copy">가격 확인부터 외국어 메시지까지 한 번에 도와드려요.</div>
+            <div class="sidebar-title">{t("brand_title_html")}</div>
+            <div class="sidebar-copy">{escape(t("brand_copy"))}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    if st.sidebar.button("↻ 새로고침", use_container_width=True):
+    render_language_selector()
+
+    if st.sidebar.button(t("refresh_button"), use_container_width=True):
         reset_inputs()
         st.rerun()
 
-    st.sidebar.markdown('<div class="sidebar-label">MENU</div>', unsafe_allow_html=True)
+    st.sidebar.markdown(f'<div class="sidebar-label">{escape(t("menu_label"))}</div>', unsafe_allow_html=True)
     page = st.sidebar.radio(
-        "메뉴",
-        ["링크 분석", "직접 입력", "데이터 대시보드"],
+        t("menu_label"),
+        ["링크 분석", "직접 입력", "데이터 대시보드", "메시지 번역"],
+        format_func=lambda value: t(NAV_KEY_TO_TKEY[value]),
         label_visibility="collapsed",
         key="nav_page",
     )
@@ -1546,20 +2265,20 @@ def main():
     model = load_model()
     if model is None:
         st.sidebar.markdown(
-            """
+            f"""
             <div class="sidebar-status warn">
                 <span class="sidebar-status-dot"></span>
-                시세 모델을 찾을 수 없어요
+                {escape(t("status_model_missing"))}
             </div>
             """,
             unsafe_allow_html=True,
         )
     else:
         st.sidebar.markdown(
-            """
+            f"""
             <div class="sidebar-status ok">
                 <span class="sidebar-status-dot"></span>
-                시세 모델 준비 완료
+                {escape(t("status_model_ready"))}
             </div>
             """,
             unsafe_allow_html=True,
@@ -1567,10 +2286,10 @@ def main():
 
     if not get_secret("OPENAI_API_KEY"):
         st.sidebar.markdown(
-            """
+            f"""
             <div class="sidebar-status muted">
                 <span class="sidebar-status-dot"></span>
-                구매 도움말은 키 설정 후 사용 가능
+                {escape(t("status_ai_key_missing"))}
             </div>
             """,
             unsafe_allow_html=True,
@@ -1580,9 +2299,12 @@ def main():
         render_analysis_page()
     elif page == "직접 입력":
         render_manual_page()
-    else:
+    elif page == "데이터 대시보드":
         render_dashboard_page()
+    else:
+        render_translate_page()
 
 
 if __name__ == "__main__":
     main()
+
